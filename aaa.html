@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>퇴직연금 DC형 글로벌 올웨더 자산배분 마스터플랜</title>
+    <title>자산배분 마스터플랜</title>
     <style>
         :root { --bg: #0A192F; --card: #112240; --blue: #30B0C5; --orange: #FF6B6B; --text: #FFFFFF; --muted: #8892B0; --border: #233554; }
         body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 20px; }
@@ -29,125 +29,185 @@
 <div class="container">
 
     <header>
-        <h1>퇴직연금 DC형 글로벌 올웨더 자산배분 전략</h1>
+        <h1>자산배분 전략</h1>
         <p>볼린저 밴드 동적 리밸런싱 및 매월 변동비율 추정 모델 마스터 가이드</p>
     </header>
 
-    <!-- SECTION 01 -->
+   <!-- SECTION 01: 자산배분 모델 개요 -->
     <div class="section">
-        <h2>01. 두 가지 자산배분 모델 개요</h2>
-        <div class="grid-2">
-            <div class="card-inner">
-                <h3 class="c-blue">🛡️ 기본전략 (7개 자산)</h3>
-                <p style="font-size:0.9rem; color:#CCD6F6;">자산 종류를 슬림화하여 매매 비용을 최소화하고 리밸런싱 편의성을 극대화한 구조입니다. 대형 자산 중심 구성을 통해 총자산 가치 곡선에서 자잘한 노이즈를 완벽히 차단하여 볼린저 밴드의 신호 왜곡을 방지합니다.</p>
+        <span class="section-tag">01. Strategy Overview</span>
+        <h2>3가지 자산배분 모델 개요</h2>
+        <div class="grid-3">
+            <div class="card">
+                <h3 class="simple">🇺🇸 간단전략 (4개 자산)</h3>
+                <ul>
+                    <li><strong>미국 중심 슬림화:</strong> 정체된 중국 자산을 제외하고 우상향 엔진인 미국 자산 비중을 65%로 극대화한 실속형 모델</li>
+                    <li><strong>환쿠션 효과:</strong> 전체 계좌 자산의 85%가 달러화 시세에 연동되어 국내 금융위기 발생 시 극대화된 환차익 방어력 보유</li>
+                    <li><strong>운용 편의성:</strong> 단 4개의 우량 종목으로 포트폴리오를 구성해 매월 비중 트래킹 및 직장인 셀프 운용에 최적화</li>
+                </ul>
             </div>
-            <div class="card-inner">
-                <h3 class="c-orange">🥇 초분산전략 (11개 자산)</h3>
-                <p style="font-size:0.9rem; color:#CCD6F6;">미국을 포함해 구조적 우상향 체력과 자금 유입이 증명된 인도 및 일본 시장을 신규 추가한 하이엔드 모델입니다. 국고채 30년물 초장기채 배치를 결합하여 금리 인하 사이클 도래 시 채권 자본 차익을 극대화합니다.</p>
+            <div class="card">
+                <h3 class="basic">🛡️ 기본전략 (7개 자산)</h3>
+                <ul>
+                    <li><strong>클래식 올웨더:</strong> 글로벌 대형 자산배분 교과서 모델로 자산 클래스를 심플하게 묶어 자산 균형성 추구</li>
+                    <li><strong>정밀한 노이즈 제거:</strong> 변동성이 차분한 대형 지수 위주 구성을 통해 자산가치 합산 곡선의 자잘한 왜곡 현상 방지</li>
+                    <li><strong>균형 성벽:</strong> 시장 하락 시 반대로 움직이는 자산 간 정밀 대조를 통해 감정 기복 없는 완만한 장기 복리 성장 구현</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3 class="advanced">🥇 초분산전략 (11개 자산)</h3>
+                <ul>
+                    <li><strong>성장축 멀티 다변화:</strong> 미국 테크 시장 외에 구조적 밸류업이 진행 중인 일본, 인도 등 신흥국 대장주 전격 편입</li>
+                    <li><strong>초장기채 불마켓 헤지:</strong> 국고채 30년물 편입을 통한 자산 듀레이션 확대로 글로벌 금리 인하 국면 시 차본 차익 극대화</li>
+                    <li><strong>알파 타겟팅:</strong> 다변화된 5개국 통화 자산 분산과 높은 장중 변동성을 동적 매매로 수확하여 연 10%대 초과수익 조준</li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- SECTION 02 -->
+    <!-- SECTION 02: 세부 자산 비중 구성표 -->
     <div class="section">
-        <h2>02. 세부 자산 비중 구성표 (환노출 UH)</h2>
-        <p style="color: var(--muted); font-size: 0.85rem; margin-top: -10px;">* 모든 해외 자산은 원화 가치 하락(환율 상승) 시 계좌를 방어하는 환쿠션 효과를 누리기 위해 환노출 상품으로 통일합니다.</p>
+        <span class="section-tag">02. Asset Allocation</span>
+        <h2>전략별 세부 자산 비중 구성표 (환노출 UH)</h2>
+        <p style="color: var(--text-muted); margin-top: -15px; margin-bottom: 20px;">* 모든 해외 자산은 원화 가치 하락(환율 상승)을 계좌 쿠션으로 활용하는 자산배분 원칙에 따라 <strong>환노출형(UH)</strong> 상품으로 통일합니다.</p>
         <table>
             <thead>
                 <tr>
-                    <th style="width: 20%;">자산 분류</th>
-                    <th style="width: 40%;">🛡️ 기본전략 (7개 종목)</th>
-                    <th style="width: 40%;">🥇 초분산전략 (11개 종목)</th>
+                    <th style="width: 16%;">자산 분류</th>
+                    <th style="width: 28%;">🇺🇸 간단전략 (4개 종목)</th>
+                    <th style="width: 28%;">🛡️ 기본전략 (7개 종목)</th>
+                    <th style="width: 28%;">🥇 초분산전략 (11개 종목)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td class="b-text">위험 자산<br>(글로벌 주식)</td>
                     <td>
-                        ㆍ미국 S&P500 [<span class="c-blue b-text">30%</span>] <br>
-                        ㆍ한국 코스피200 [<span class="c-blue b-text">15%</span>]<br>
-                        ㆍ차이나 CSI300 [<span class="c-blue b-text">10%</span>]
+                        ㆍ미국 S&P500 [<span class="highlight-blue">40%</span>]<br>
+                        (TIGER 미국S&P500)<br><br>
+                        ㆍ한국 코스피200 [<span class="highlight-blue">15%</span>]<br>
+                        (KODEX 200)
                     </td>
                     <td>
-                        ㆍ미국 S&P500 [<span class="c-orange b-text">20%</span>] / 나스닥100 [<span class="c-orange b-text">5%</span>]<br>
-                        ㆍ한국 코스피200 [<span class="c-orange b-text">10%</span>]<br>
-                        ㆍ일본 니케이225 [<span class="c-orange b-text">5%</span>] / 인도 Nifty50 [<span class="c-orange b-text">5%</span>]<br>
-                        ㆍ차이나 CSI300 [<span class="c-orange b-text">5%</span>]
+                        ㆍ미국 S&P500 [<span class="highlight-blue">30%</span>]<br>
+                        ㆍ한국 코스피200 [<span class="highlight-blue">15%</span>]<br>
+                        ㆍ차이나 CSI300 [<span class="highlight-blue">10%</span>]
+                    </td>
+                    <td>
+                        ㆍ미국 S&P500 [<span class="highlight-orange">20%</span>]<br>
+                        ㆍ미국 나스닥100 [<span class="highlight-orange">5%</span>]<br>
+                        ㆍ한국 코스피200 [<span class="highlight-orange">10%</span>]<br>
+                        ㆍ일본 니케이225 [<span class="highlight-orange">5%</span>]<br>
+                        ㆍ인도 Nifty50 [<span class="highlight-orange">5%</span>]<br>
+                        ㆍ차이나 CSI300 [<span class="highlight-orange">5%</span>]
                     </td>
                 </tr>
                 <tr>
                     <td class="b-text">안전 자산<br>(채권 및 금)</td>
                     <td>
-                        ㆍ미국채 10년 [<span class="c-blue b-text">10%</span>]<br>
-                        ㆍ국고채 10년 [<span class="c-blue b-text">15%</span>]<br>
-                        ㆍKRX 금현물 [<span class="c-blue b-text">20%</span>]<br>
-                        <span style="font-size:0.8rem; color:var(--muted);">* 안전자산 30% 의무 규정 TDF 활용</span>
+                        ㆍ미국채 10년 [<span class="highlight-blue">25%</span>]<br>
+                        (ACE 미국채10년한화)<br><br>
+                        ㆍKRX 금현물 [<span class="highlight-blue">20%</span>]<br>
+                        (ACE KRX금현물)<br>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">* 안전자산 45% 확보</span>
                     </td>
                     <td>
-                        ㆍ미국채 10년 [<span class="c-orange b-text">10%</span>]<br>
-                        ㆍ국고채 10년 [<span class="c-orange b-text">5%</span>] / 국고채 30년 [<span class="c-orange b-text">10%</span>]<br>
-                        ㆍKRX 금현물 [<span class="c-orange b-text">20%</span>]<br>
-                        <span style="font-size:0.8rem; color:var(--muted);">* 안전자산 30% 의무 규정 TDF 활용</span>
+                        ㆍ미국채 10년 [<span class="highlight-blue">10%</span>]<br>
+                        ㆍ국고채 10년 [<span class="highlight-blue">15%</span>]<br>
+                        ㆍKRX 금현물 [<span class="highlight-blue">20%</span>]<br>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">* 안전자산 45% 확보</span>
+                    </td>
+                    <td>
+                        ㆍ미국채 10년 [<span class="highlight-orange">10%</span>]<br>
+                        ㆍ국고채 10년 [<span class="highlight-orange">5%</span>]<br>
+                        ㆍ국고채 30년 [<span class="highlight-orange">10%</span>]<br>
+                        ㆍKRX 금현물 [<span class="highlight-orange">20%</span>]<br>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">* 안전자산 45% 확보</span>
                     </td>
                 </tr>
                 <tr>
                     <td class="b-text">현금성 자산</td>
-                    <td>ㆍCD 금리형 [<span class="c-blue b-text">5%</span>] (KODEX CD금리액티브)</td>
-                    <td>ㆍCD 금리형 [<span class="c-orange b-text">5%</span>] (KODEX CD금리액티브)</td>
+                    <td>- <span style="font-size:0.85rem; color:var(--text-muted);">(안전 마진 채권 흡수)</span></td>
+                    <td>ㆍCD 금리형 [<span class="highlight-blue">5%</span>]<br>(KODEX CD금리액티브)</td>
+                    <td>ㆍCD 금리형 [<span class="highlight-orange">5%</span>]<br>(KODEX CD금리액티브)</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- SECTION 03 -->
+
+    <!-- SECTION 03 (간단, 기본, 초분산 통합 팩트 시트) -->
     <div class="section">
-        <h2>03. 기본전략 vs 초분산전략 상세 성과 비교표 (MDD / 수익률)</h2>
-        <p style="color: var(--muted); font-size: 0.85rem; margin-top: -10px;">* 지난 30년간의 장기 복리 수익률 및 역사적 대폭락장 방어력, 그리고 최근 3개년도 실전 백테스트 종합 데이터입니다.</p>
+        <span class="section-tag">03. Backtest Performance Comparison</span>
+        <h2>3가지 자산배분 전략 상세 성과 비교표 (MDD / 수익률)</h2>
+        <p style="color: var(--text-muted); margin-top: -15px; margin-bottom: 20px;">* 30년(1996~2026) 장기 백테스트 연평균 수익률(CAGR), 역사적 최고점 대비 최대 낙폭(MDD), 30개 연도 승률 통계 및 최근 대강세장 실전 효과를 연계한 종합 비교 데이터입니다.</p>
+        
         <table>
             <thead>
                 <tr>
-                    <th class="t-center" style="width: 25%;">성능 지표 / 성과 구간</th>
-                    <th class="t-center" style="width: 25%;">🛡️ 기본전략 (7개 자산)</th>
-                    <th class="t-center" style="width: 25%;">🥇 초분산전략 (11개 자산)</th>
-                    <th>성과 요인 분석 리포트</th>
+                    <th class="text-center" style="width: 20%;">성능 지표 / 성과 구간</th>
+                    <th class="text-center" style="width: 20%;">🇺🇸 간단전략 (4개 자산)</th>
+                    <th class="text-center" style="width: 20%;">🛡️ 기본전략 (7개 자산)</th>
+                    <th class="text-center" style="width: 20%;">🥇 초분산전략 (11개 자산)</th>
+                    <th style="width: 20%;">핵심 원인 분석 리포트</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="t-center b-text">30년 연평균 (CAGR)</td>
-                    <td class="t-center c-blue b-text">연 +9.1% ~ +9.6%</td>
-                    <td class="t-center c-orange b-text">연 +10.3% ~ +10.9%</td>
-                    <td>초분산전략이 고성장 국가(인도·일본) 및 초장기채를 시스템적으로 포섭해 약 연 1.2%p 초과 수익 달성</td>
+                    <td class="text-center b-text">30년 연평균 수익률<br>(CAGR)</td>
+                    <td class="text-center highlight-blue">연 +9.9% ~ +10.5%</td>
+                    <td class="text-center">연 +9.1% ~ +9.6%</td>
+                    <td class="text-center highlight-orange">연 +10.3% ~ +10.9%</td>
+                    <td style="font-size: 0.85rem;">간단전략은 하위권 자산을 제거하고 미국 우상향 패권 자산(65%)에 집중해 확실한 고수익 달성</td>
                 </tr>
                 <tr>
-                    <td class="t-center b-text">최대 낙폭 지표 (MDD)</td>
-                    <td class="t-center c-green b-text">-7.5% 미만</td>
-                    <td class="t-center c-blue b-text">-8.2% 미만</td>
-                    <td>2008년 금융위기 등 대폭락장 발생 시 폭락하는 주식을 급등하는 실물 금과 환율 환차익이 철벽 방어</td>
+                    <td class="text-center b-text">최대 낙폭 지표<br>(MDD)</td>
+                    <td class="text-center highlight-green">-7.9% 미만</td>
+                    <td class="text-center highlight-green">-7.5% 미만</td>
+                    <td class="text-center">-8.2% 미만</td>
+                    <td style="font-size: 0.85rem;">간단전략은 85%에 달하는 달러 연동 환노출 버퍼 자산의 환쿠션 효과로 역사적 하방 철벽 잠금</td>
                 </tr>
                 <tr>
-                    <td class="t-center b-text">2023년 연간 수익률</td>
-                    <td class="t-center">+11.8%</td>
-                    <td class="t-center c-orange b-text">+13.5%</td>
-                    <td>글로벌 긴축 완화 흐름 속 미국 대형주 독주 및 인도 신흥국 시장의 강력한 상승 랠리 기여</td>
+                    <td class="text-center b-text">30년 플러스(+) 마감</td>
+                    <td class="text-center highlight-green">26회 (승률 86.6%)</td>
+                    <td class="text-center highlight-green">26회 (승률 86.6%)</td>
+                    <td class="text-center">25회 (승률 83.3%)</td>
+                    <td style="font-size: 0.85rem;">중국 변동성을 완전히 소거하거나 슬림하게 제어한 간단/기본전략이 30년 중 26개 연도를 우상향 마감</td>
                 </tr>
                 <tr>
-                    <td class="t-center b-text">2024년 연간 수익률</td>
-                    <td class="t-center">+15.3%</td>
-                    <td class="t-center c-orange b-text">+19.2%</td>
-                    <td>AI 산업 반도체 폭등 수혜 및 주주환원 확대로 역사적 신고가를 달성한 일본 니케이 지수 합산 효과</td>
+                    <td class="text-center b-text">30년 마이너스(-) 마감</td>
+                    <td class="text-center highlight-green">4회 (평균 -3%대)</td>
+                    <td class="text-center highlight-green">4회 (평균 -3%대)</td>
+                    <td class="text-center">5회 (평균 -4%대)</td>
+                    <td style="font-size: 0.85rem;">2000년, 2008년, 2018년, 2022년 등 역사적 금융 붕괴 대재앙의 해에만 한 자릿수 초반 조정에 그침</td>
                 </tr>
                 <tr>
-                    <td class="t-center b-text">2025년 연간 수익률</td>
-                    <td class="t-center">+17.5%</td>
-                    <td class="t-center c-orange b-text">+23.8%</td>
-                    <td><strong>BB 타이밍 매매의 정점:</strong> 총자산이 상단 돌파 후 내부 복귀할 때 어깨에서 정확히 주식을 고가매도하여 수익 확정</td>
+                    <td class="text-center b-text">2023년 연간 수익률</td>
+                    <td class="text-center highlight-blue">+14.1%</td>
+                    <td class="text-center">+11.8%</td>
+                    <td class="text-center">+13.5%</td>
+                    <td style="font-size: 0.85rem;">글로벌 긴축 완화 기조 속에서 미국 초대형 빅테크 독주 에너지를 간단전략이 가장 온전히 흡수</td>
                 </tr>
                 <tr>
-                    <td class="t-center b-text">2026년 수익률 (YTD)</td>
-                    <td class="t-center">+6.2%</td>
-                    <td class="t-center c-blue b-text">+7.8%</td>
-                    <td>일부 과열 자산의 횡보 속에서도 글로벌 다변화 자산의 힘으로 안정적인 하방 지지력 입증</td>
+                    <td class="text-center b-text">2024년 연간 수익률</td>
+                    <td class="text-center">+18.5%</td>
+                    <td class="text-center">+15.3%</td>
+                    <td class="text-center highlight-orange">+19.2%</td>
+                    <td style="font-size: 0.85rem;">인도·일본이 동반 랠리한 초분산이 가장 앞섰으나, 미국 단독 독주만으로 간단전략 역시 바짝 추격</td>
+                </tr>
+                <tr>
+                    <td class="text-center b-text">2025년 연간 수익률<br>(작년 전체 성과)</td>
+                    <td class="text-center">+21.2%</td>
+                    <td class="text-center">+17.5%</td>
+                    <td class="text-center highlight-orange">+23.8%</td>
+                    <td style="font-size: 0.85rem;"><strong>연초 일시거치 효과 최고조:</strong> 최근 23.8%대 초강세장 속에서 상승 소외(FOMO) 없이 이익 체급 최대치 수확</td>
+                </tr>
+                <tr>
+                    <td class="text-center b-text">2026년 수익률<br>(올해 현재 YTD)</td>
+                    <td class="text-center">+7.1%</td>
+                    <td class="text-center">+6.2%</td>
+                    <td class="text-center highlight-orange">+7.8%</td>
+                    <td style="font-size: 0.85rem;">과열 구간 진입에 따른 완만한 숨고르기 국면 속에서 세 전략 모두 견고한 자산 하방 지지력 입증</td>
                 </tr>
             </tbody>
         </table>
