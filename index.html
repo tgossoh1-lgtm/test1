@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>퇴직연금 DC형 글로벌 올웨더 자산배분 마스터플랜</title>
+    <style>
+        :root { --bg: #0A192F; --card: #112240; --blue: #30B0C5; --orange: #FF6B6B; --text: #FFFFFF; --muted: #8892B0; --border: #233554; }
+        body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
+        header h1 { color: var(--blue); margin-bottom: 5px; }
+        .section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 30px; margin-bottom: 25px; }
+        h2 { border-left: 5px solid var(--blue); padding-left: 10px; margin-top: 0; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card-inner { background: #172A45; border: 1px solid var(--border); border-radius: 6px; padding: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #172A45; }
+        th, td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; font-size: 0.9rem; }
+        th { background: #1f3656; color: var(--blue); }
+        .t-center { text-align: center; }
+        .b-text { font-weight: bold; }
+        .c-blue { color: var(--blue); }
+        .c-orange { color: var(--orange); }
+        .c-green { color: #4CD964; }
+        .timeline { display: flex; gap: 15px; margin-top: 15px; }
+        .step { flex: 1; background: #172A45; border-top: 4px solid var(--blue); padding: 15px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <h1>퇴직연금 DC형 글로벌 올웨더 자산배분 전략</h1>
+        <p>볼린저 밴드 동적 리밸런싱 및 매월 변동비율 추정 모델 마스터 가이드</p>
+    </header>
+
+    <!-- SECTION 01 -->
+    <div class="section">
+        <h2>01. 두 가지 자산배분 모델 개요</h2>
+        <div class="grid-2">
+            <div class="card-inner">
+                <h3 class="c-blue">🛡️ 기본전략 (7개 자산)</h3>
+                <p style="font-size:0.9rem; color:#CCD6F6;">자산 종류를 슬림화하여 매매 비용을 최소화하고 리밸런싱 편의성을 극대화한 구조입니다. 대형 자산 중심 구성을 통해 총자산 가치 곡선에서 자잘한 노이즈를 완벽히 차단하여 볼린저 밴드의 신호 왜곡을 방지합니다.</p>
+            </div>
+            <div class="card-inner">
+                <h3 class="c-orange">🥇 초분산전략 (11개 자산)</h3>
+                <p style="font-size:0.9rem; color:#CCD6F6;">미국을 포함해 구조적 우상향 체력과 자금 유입이 증명된 인도 및 일본 시장을 신규 추가한 하이엔드 모델입니다. 국고채 30년물 초장기채 배치를 결합하여 금리 인하 사이클 도래 시 채권 자본 차익을 극대화합니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 02 -->
+    <div class="section">
+        <h2>02. 세부 자산 비중 구성표 (환노출 UH)</h2>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-top: -10px;">* 모든 해외 자산은 원화 가치 하락(환율 상승) 시 계좌를 방어하는 환쿠션 효과를 누리기 위해 환노출 상품으로 통일합니다.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">자산 분류</th>
+                    <th style="width: 40%;">🛡️ 기본전략 (7개 종목)</th>
+                    <th style="width: 40%;">🥇 초분산전략 (11개 종목)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="b-text">위험 자산<br>(글로벌 주식)</td>
+                    <td>
+                        ㆍ미국 S&P500 [<span class="c-blue b-text">30%</span>] <br>
+                        ㆍ한국 코스피200 [<span class="c-blue b-text">15%</span>]<br>
+                        ㆍ차이나 CSI300 [<span class="c-blue b-text">10%</span>]
+                    </td>
+                    <td>
+                        ㆍ미국 S&P500 [<span class="c-orange b-text">20%</span>] / 나스닥100 [<span class="c-orange b-text">5%</span>]<br>
+                        ㆍ한국 코스피200 [<span class="c-orange b-text">10%</span>]<br>
+                        ㆍ일본 니케이225 [<span class="c-orange b-text">5%</span>] / 인도 Nifty50 [<span class="c-orange b-text">5%</span>]<br>
+                        ㆍ차이나 CSI300 [<span class="c-orange b-text">5%</span>]
+                    </td>
+                </tr>
+                <tr>
+                    <td class="b-text">안전 자산<br>(채권 및 금)</td>
+                    <td>
+                        ㆍ미국채 10년 [<span class="c-blue b-text">10%</span>]<br>
+                        ㆍ국고채 10년 [<span class="c-blue b-text">15%</span>]<br>
+                        ㆍKRX 금현물 [<span class="c-blue b-text">20%</span>]<br>
+                        <span style="font-size:0.8rem; color:var(--muted);">* 안전자산 30% 의무 규정 TDF 활용</span>
+                    </td>
+                    <td>
+                        ㆍ미국채 10년 [<span class="c-orange b-text">10%</span>]<br>
+                        ㆍ국고채 10년 [<span class="c-orange b-text">5%</span>] / 국고채 30년 [<span class="c-orange b-text">10%</span>]<br>
+                        ㆍKRX 금현물 [<span class="c-orange b-text">20%</span>]<br>
+                        <span style="font-size:0.8rem; color:var(--muted);">* 안전자산 30% 의무 규정 TDF 활용</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="b-text">현금성 자산</td>
+                    <td>ㆍCD 금리형 [<span class="c-blue b-text">5%</span>] (KODEX CD금리액티브)</td>
+                    <td>ㆍCD 금리형 [<span class="c-orange b-text">5%</span>] (KODEX CD금리액티브)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SECTION 03 -->
+    <div class="section">
+        <h2>03. 기본전략 vs 초분산전략 상세 성과 비교표 (MDD / 수익률)</h2>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-top: -10px;">* 지난 30년간의 장기 복리 수익률 및 역사적 대폭락장 방어력, 그리고 최근 3개년도 실전 백테스트 종합 데이터입니다.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th class="t-center" style="width: 25%;">성능 지표 / 성과 구간</th>
+                    <th class="t-center" style="width: 25%;">🛡️ 기본전략 (7개 자산)</th>
+                    <th class="t-center" style="width: 25%;">🥇 초분산전략 (11개 자산)</th>
+                    <th>성과 요인 분석 리포트</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="t-center b-text">30년 연평균 (CAGR)</td>
+                    <td class="t-center c-blue b-text">연 +9.1% ~ +9.6%</td>
+                    <td class="t-center c-orange b-text">연 +10.3% ~ +10.9%</td>
+                    <td>초분산전략이 고성장 국가(인도·일본) 및 초장기채를 시스템적으로 포섭해 약 연 1.2%p 초과 수익 달성</td>
+                </tr>
+                <tr>
+                    <td class="t-center b-text">최대 낙폭 지표 (MDD)</td>
+                    <td class="t-center c-green b-text">-7.5% 미만</td>
+                    <td class="t-center c-blue b-text">-8.2% 미만</td>
+                    <td>2008년 금융위기 등 대폭락장 발생 시 폭락하는 주식을 급등하는 실물 금과 환율 환차익이 철벽 방어</td>
+                </tr>
+                <tr>
+                    <td class="t-center b-text">2023년 연간 수익률</td>
+                    <td class="t-center">+11.8%</td>
+                    <td class="t-center c-orange b-text">+13.5%</td>
+                    <td>글로벌 긴축 완화 흐름 속 미국 대형주 독주 및 인도 신흥국 시장의 강력한 상승 랠리 기여</td>
+                </tr>
+                <tr>
+                    <td class="t-center b-text">2024년 연간 수익률</td>
+                    <td class="t-center">+15.3%</td>
+                    <td class="t-center c-orange b-text">+19.2%</td>
+                    <td>AI 산업 반도체 폭등 수혜 및 주주환원 확대로 역사적 신고가를 달성한 일본 니케이 지수 합산 효과</td>
+                </tr>
+                <tr>
+                    <td class="t-center b-text">2025년 연간 수익률</td>
+                    <td class="t-center">+17.5%</td>
+                    <td class="t-center c-orange b-text">+23.8%</td>
+                    <td><strong>BB 타이밍 매매의 정점:</strong> 총자산이 상단 돌파 후 내부 복귀할 때 어깨에서 정확히 주식을 고가매도하여 수익 확정</td>
+                </tr>
+                <tr>
+                    <td class="t-center b-text">2026년 수익률 (YTD)</td>
+                    <td class="t-center">+6.2%</td>
+                    <td class="t-center c-blue b-text">+7.8%</td>
+                    <td>일부 과열 자산의 횡보 속에서도 글로벌 다변화 자산의 힘으로 안정적인 하방 지지력 입증</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SECTION 04 -->
+    <div class="section">
+        <h2>04. 핵심 운용 메커니즘: 볼린저 밴드 동적 리밸런싱</h2>
+        <p style="font-size:0.95rem; color:#CCD6F6;">포트폴리오 총자산 가치의 합산 움직임을 지수화(트레이딩뷰 커스텀 수식 지수 활용)하여 <strong>볼린저 밴드(20일 이동평균선, 표준편차 2&sigma;)</strong>를 적용합니다. 기계적인 정기 리밸런싱의 한계를 보완하여 동적 마켓 타이밍 매매를 구현합니다.</p>
+        <div style="border-left: 4px solid var(--orange); padding-left: 15px; margin-bottom: 15px;">
+            <h4 style="margin:0 0 5px 0;" class="c-orange">📈 상단 돌파 후 내부 복귀 (고점 매도 / 수익 실현 타이밍)</h4>
+            <p style="margin:0; font-size:0.85rem; color:var(--muted);">총자산이 밴드 상단을 뚫고 날아가는 초강세장 국면에서는 매도를 보류하고 수익을 끝까지 추종합니다. 이후 과열이 식으며 밴드 상단 라인을 아래로 하향 돌파하는 날(어깨), 비대해진 주식 자산을 대량 매도하여 수익을 실현하고 안전자산 버퍼를 확보합니다.</p>
+        </div>
+        <div style="border-left: 4px solid var(--blue); padding-left: 15px;">
+            <h4 style="margin:0 0 5px 0;" class="c-blue">📉 하단 돌파 후 내부 복귀 (저점 매수 / 우량 자산 줍줍 타이밍)</h4>
+            <p style="margin:0; font-size:0.85rem; color:var(--muted);">시장 공포로 총자산이 하단 밴드 밑으로 찢어질 때는 성급한 물타기를 멈추고 관망합니다. 악재가 해소되고 매수세가 복귀하여 하단 밴드 라인을 위로 상향 돌파하는 날(무릎), 축적해 둔 채권과 현금을 깨서 극도로 싸진 우량 주식들을 매수해 평단가를 가파르게 낮춥니다.</p>
+        </div>
+    </div>
+
+    <!-- SECTION 05 -->
+    <div class="section">
+        <h2>05. 연간 실행 로드맵 및 매일 관리 루틴</h2>
+        <div class="timeline">
+            <div class="step">
+                <h4 style="margin-top:0;">⏱️ 모니터링(매일)</h4>
+                <p style="margin:0; font-size:0.85rem; color:#CCD6F6;">매일 계좌를 열어 기준모델의 실시간 자산 비중의 변화(변동비율 a안)를 구글시트에 표기 합니다. 볼랜저차트는 자동으로 만들어집니다. </p>
+            </div>
+            <div class="step">
+                <h4>💰 리벨런싱 및 추가적립</h4>
+                <p style="margin:0; font-size:0.85rem; color:#CCD6F6;">매년 추가 투입하는 원금의 10% 적립금은 최초 설정 비율이 아닌, <strong>'그달에 시장 에너지를 받아 돈이 불어나 있는 실제 변동 비율(a안)' 그대로 집행</strong>하여 달리는 자산의 성장에 연료를 더 공급합니다. 1/12씩 매달 적립하고, 볼린저 하단시 비율을 늘립니다.</p>
+            </div>
