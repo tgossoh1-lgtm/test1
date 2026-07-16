@@ -215,7 +215,7 @@
 
     <!-- SECTION 04 -->
     <div class="section">
-        <h2>04. 핵심 운용 메커니즘: 볼린저 밴드 동적 리밸런싱-But 표준 따라하기</h2>
+        <h2>04. (예제) 핵심 운용 메커니즘: 볼린저 밴드 동적 리밸런싱-But 표준 따라하기</h2>
         <p style="font-size:0.95rem; color:#CCD6F6;">포트폴리오 총자산 가치의 합산 움직임을 지수화(트레이딩뷰 커스텀 수식 지수 활용)하여 <strong>볼린저 밴드(20일 이동평균선, 표준편차 2&sigma;)</strong>를 적용합니다. 기계적인 정기 리밸런싱의 한계를 보완하여 동적 마켓 타이밍 매매를 구현합니다.</p>
         <div style="border-left: 4px solid var(--orange); padding-left: 15px; margin-bottom: 15px;">
             <h4 style="margin:0 0 5px 0;" class="c-orange">📈 상단 돌파 후 내부 복귀 (고점 매도 / 수익 실현 타이밍)</h4>
@@ -233,9 +233,10 @@
         <div class="timeline">
             <div class="step">
                 <h4 style="margin-top:0;">⏱️ 모니터링(매일)</h4>
-                <p style="margin:0; font-size:0.85rem; color:#CCD6F6;">매일 계좌를 열어 기준모델의 실시간 자산 비중의 변화(변동비율 a안)를 구글시트에 표기 합니다. 볼랜저차트는 자동으로 만들어집니다. </p>
+                <p style="margin:0; font-size:0.85rem; color:#CCD6F6;">매일 계좌를 열어 기준모델의 실시간 자산 비중의 변화(변동비율 a안)를 구글시트에 표기 합니다. 볼린저차트는 자동으로 만들어집니다.<br> DC형과 IRP는 TDF를 병행합니다. </p>
             </div>
             <div class="step">
-                <h4>💰 추가적립</h4>
-                <p style="margin:0; font-size:0.85rem; color:#CCD6F6;">매년 추가는 별도 계좌에 4분법으로 모아갑니다. 연초에 지난해 모아진 금액은 일시금으로 넣습니다. DC형은 12분할+볼린저를 사용합니다. </p>
+                <h4 style="margin-top:0;">💰 추가적립</h4>
+                <p style="margin:0; font-size:0.85rem; color:#CCD6F6;">매년 추가는 별도 계좌에 4분법으로 모아서 연초에 지난해 모아진 금액은 일시금으로 넣습니다.<br>DC형 적립은 12분할+볼린저를 사용합니다. </p>
+
             </div>
