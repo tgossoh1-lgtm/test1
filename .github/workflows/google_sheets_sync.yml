@@ -2,8 +2,8 @@ name: Google Sheets Data Sync
 
 on:
   schedule:
-    - cron: '0 0 * * *' # 매일 새벽 9시(한국시간)에 자동으로 데이터를 받아옵니다.
-  workflow_dispatch: # 내가 원할 때 언제든 수동으로 실행할 수 있는 버튼을 만듭니다.
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -13,8 +13,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download Google Sheet as XLSX
+        # -f 옵션을 추가해 다운로드 실패 시 에러를 확실히 잡고, -k 옵션으로 사내 보안망의 인증서 문제를 우회합니다.
         run: |
-          curl -L -o "sheet_data.xlsx" "https://google.com{{ secrets.SPREADSHEET_ID }}/export?format=xlsx"
+          curl -f -k -L -o "sheet_data.xlsx" "https://google.com{{ secrets.SPREADSHEET_ID }}/export?format=xlsx"
 
       - name: Commit and Push if changed
         run: |
@@ -22,3 +23,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add sheet_data.xlsx
           git diff --quiet && git diff --staged --quiet || (git commit -m "자동 업데이트: 최신 구글 시트 데이터 반영" && git push)
+
