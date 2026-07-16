@@ -2,23 +2,45 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>비밀번호 확인</title>
+    <title>프레젠테이션 대시보드</title>
     <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 150px; background-color: #f0f2f5; }
-        h1 { color: #333; font-size: 28px; margin-bottom: 20px; }
+        /* 초기에는 메뉴를 보이지 않게 숨겨둡니다 */
+        #protected-menu { display: none; }
+        
+        body { font-family: sans-serif; text-align: center; padding-top: 80px; background-color: #f0f2f5; }
+        h1 { color: #333; font-size: 32px; margin-bottom: 40px; }
+        
+        /* 버튼 스타일 지정 */
+        .btn-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .presentation-btn {
+            display: block;
+            width: 280px;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #1877f2;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        /* 마우스를 올렸을 때 효과 */
+        .presentation-btn:hover { background-color: #145dbf; transform: translateY(-2px); }
         .loading { font-size: 18px; color: #666; }
     </style>
     
     <script>
         window.onload = function() {
-            // 암호를 0817로 설정했습니다
+            // 암호는 동일하게 0817로 설정했습니다
             const MY_PASSWORD = "0817"; 
             
-            let passwordInput = prompt("이 프레젠테이션을 보려면 비밀번호를 입력하세요:");
+            let passwordInput = prompt("프레젠테이션 목록을 보려면 비밀번호를 입력하세요:");
 
             if (passwordInput === MY_PASSWORD) {
-                // 암호가 맞으면 aaa.html 페이지로 이동시킵니다
-                window.location.href = "aaa.html";
+                // 암호가 맞으면 숨겨진 5개 메뉴 버튼을 화면에 보여줍니다
+                document.getElementById("auth-loading").style.display = "none";
+                document.getElementById("protected-menu").style.display = "block";
             } else {
                 // 암호가 틀리면 경고창을 띄우고 다시 입력하도록 새로고침합니다
                 alert("비밀번호가 올바르지 않습니다.");
@@ -28,7 +50,26 @@
     </script>
 </head>
 <body>
-    <h1>🔒 비밀번호로 보호된 페이지입니다.</h1>
-    <p class="loading">암호 인증 진행 중...</p>
+
+    <!-- 암호 입력 전 대기 화면 -->
+    <div id="auth-loading">
+        <h1>🔒 비밀번호로 보호된 페이지입니다.</h1>
+        <p class="loading">암호 인증 진행 중...</p>
+    </div>
+
+    <!-- 🔑 암호 인증에 성공하면 나타나는 5개의 발표 링크 메뉴 -->
+    <div id="protected-menu">
+        <h1>📊 발표 자료 목록 선택</h1>
+        
+        <div class="btn-container">
+            <!-- href 주소를 각 html 파일명으로 매칭해 두었습니다. 버튼 문구는 자유롭게 수정 가능합니다 -->
+            <a href="aaa.html" class="presentation-btn">1. aaa 프레젠테이션</a>
+            <a href="bbb.html" class="presentation-btn">2. bbb 프레젠테이션</a>
+            <a href="ccc.html" class="presentation-btn">3. ccc 프레젠테이션</a>
+            <a href="ddd.html" class="presentation-btn">4. ddd 프레젠테이션</a>
+            <a href="eee.html" class="presentation-btn">5. eee 프레젠테이션</a>
+        </div>
+    </div>
+
 </body>
 </html>
