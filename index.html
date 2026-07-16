@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호 확인</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 150px; background-color: #f0f2f5; }
+        h1 { color: #333; font-size: 28px; margin-bottom: 20px; }
+        .loading { font-size: 18px; color: #666; }
+    </style>
+    
+    <script>
+        window.onload = function() {
+            // 암호를 0817로 설정했습니다
+            const MY_PASSWORD = "0817"; 
+            
+            let passwordInput = prompt("이 프레젠테이션을 보려면 비밀번호를 입력하세요:");
+
+            if (passwordInput === MY_PASSWORD) {
+                // 암호가 맞으면 aaa.html 페이지로 이동시킵니다
+                window.location.href = "aaa.html";
+            } else {
+                // 암호가 틀리면 경고창을 띄우고 다시 입력하도록 새로고침합니다
+                alert("비밀번호가 올바르지 않습니다.");
+                window.location.reload();
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>🔒 비밀번호로 보호된 페이지입니다.</h1>
+    <p class="loading">암호 인증 진행 중...</p>
+</body>
+</html>
