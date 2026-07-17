@@ -2,379 +2,505 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>최적의 자산배분 4대 전략 및 백테스트 결과 분석</title>
+    <title>4대 자산배분 전략 비교 및 실전 이원화 운용 보고서 (종합본)</title>
     <style>
-        /* CSS Reset & Variable */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-        
         @page {
             size: A4;
-            margin: 12mm 10mm;
+            margin: 15mm 12mm;
             background-color: #fafbfc;
         }
-
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
             color: #2c3e50;
             background-color: #fafbfc;
-            line-height: 1.5;
-            font-size: 9.5pt;
+            line-height: 1.6;
             margin: 0;
             padding: 0;
+            font-size: 10pt;
         }
-
-        /* Elements Styling */
-        h1, h2, h3 {
-            color: #1a252f;
-            margin-top: 0;
-            page-break-after: avoid;
+        /* 가로로 너무 길어지는 현상을 방지하기 위해 max-width 설정 및 중앙 정렬 */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 15px;
         }
-
         h1 {
-            font-size: 16pt;
+            font-size: 20pt;
             text-align: center;
             padding: 18px 0;
             background: #1e293b;
             color: #ffffff;
-            margin: -12mm -10mm 20px -10mm;
-            border-bottom: 4px solid #38bdf8;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            letter-spacing: -0.5px;
         }
-
         h2 {
-            font-size: 12pt;
+            font-size: 13pt;
             border-left: 5px solid #0284c7;
             padding-left: 10px;
-            margin-top: 20px;
+            margin-top: 30px;
             margin-bottom: 12px;
             color: #0f172a;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            page-break-after: avoid;
         }
-
-        p {
-            margin: 0 0 8px 0;
-            text-align: justify;
+        h3 {
+            font-size: 11pt;
+            color: #0369a1;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
         }
-
-        /* Tables styling */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
-            background: #ffffff;
+            margin: 12px 0;
             page-break-inside: auto;
         }
-
         tr {
             page-break-inside: avoid;
             page-break-after: auto;
         }
-
         th, td {
-            padding: 7px 8px;
+            padding: 10px 12px;
             border: 1px solid #cbd5e1;
             text-align: left;
             vertical-align: top;
-            font-size: 8.5pt;
+            font-size: 9.5pt;
         }
-
         th {
             background-color: #1e293b;
             color: #ffffff;
             font-weight: 600;
             text-align: center;
         }
-
-        .table-center td {
+        .center-text {
             text-align: center;
-            vertical-align: middle;
         }
-
         tr:nth-child(even) td {
             background-color: #f8fafc;
         }
-
-        .highlight-gold {
+        .best-performance {
+            background-color: #e6f4ea !important;
+            color: #137333;
             font-weight: bold;
-            color: #b45309;
-            background-color: #fef3c7 !important;
         }
-
-        .highlight-best {
-            font-weight: bold;
-            color: #15803d;
-            background-color: #dcfce7 !important;
-        }
-
         .condition-box {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            padding: 10px 12px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
             border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 9pt;
+            margin-bottom: 20px;
+            font-size: 9.5pt;
         }
-
+        .strategy-map {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .map-container {
+            display: block;
+            margin-top: 10px;
+        }
+        .map-box {
+            display: inline-block;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            border-radius: 6px;
+            width: 48%;
+            margin-right: 2%;
+            vertical-align: top;
+        }
+        .map-box:last-child {
+            margin-right: 0;
+        }
         ul {
-            margin: 0 0 8px 0;
+            margin: 5px 0 0 0;
             padding-left: 18px;
         }
-
         li {
             margin-bottom: 4px;
         }
-
-        .td-list {
-            margin: 0;
-            padding-left: 12px;
-            list-style-type: none;
-        }
-        
-        .td-list li {
-            position: relative;
-            margin-bottom: 3px;
-        }
-        
-        .td-list li::before {
-            content: "•";
-            position: absolute;
-            left: -10px;
-            color: #64748b;
-        }
-
         .footer {
-            margin-top: 25px;
-            font-size: 8pt;
+            margin-top: 35px;
+            font-size: 8.5pt;
             color: #64748b;
             text-align: center;
             border-top: 1px solid #e2e8f0;
-            padding-top: 8px;
+            padding-top: 15px;
         }
     </style>
 </head>
 <body>
 
-    <h1>정교한 변동성 제어 기반 자산배분 종합 전략 보고서</h1>
+<div class="container">
+    <h1>4대 자산배분 전략 비교 및 실전 이원화 운용 보고서</h1>
 
     <div class="condition-box">
-        <strong>💡 시뮬레이션 공통 핵심 조건 가이드</strong>
+        <strong>💡 백테스트 공통 환경 및 원칙</strong>
         <ul>
-            <li><strong>백테스트 기간:</strong> 지난 40개년 (1986년 ~ 2026년 현재 기준)</li>
-            <li><strong>환노출 조건:</strong> 한국 코스피200, 국고채, 현금을 제외한 모든 글로벌 주식·미국채·SOFR·금현물은 환노출(원화 가치 변동 반영) 상품으로 반영</li>
-            <li><strong>리밸런싱 전략:</strong> 전체 포트폴리오 누적 수익률에 <strong>볼린저 밴드(20일 이평선, 2표준편차)</strong>를 적용하여 상단 돌파 후 하향 이탈 시(과매수 익절), 하단 돌파 후 상향 이탈 시(과매도 자산 편입) 리밸런싱 수행</li>
+            <li><strong>분석 기간:</strong> 1986년 ~ 2026년 현재 (40개년 장기 백테스트)</li>
+            <li><strong>환노출 조건:</strong> 국내 자산(코스피200, 국고채, 원화 현금) 제외 해외 자산은 모두 환노출 반영</li>
+            <li><strong>리밸런싱 매커니즘:</strong> 포트폴리오 누적 수익률이 볼린저 밴드(20일 이평선, ±2표준편차) 채널 이탈 시 기계적 조절</li>
         </ul>
     </div>
 
-    <h2>1. 4가지 전략별 자산 비중 구성표</h2>
+    <h2>1. 4가지 전략별 고유 자산 비중 구성표 (정확한 100% 배분)</h2>
     <table>
         <thead>
             <tr>
-                <th style="width: 16%;">자산 분류</th>
-                <th style="width: 21%;">A 간단전략 (4개 종목)</th>
-                <th style="width: 21%;">B 간단전략 (현금 추가) (5개 종목)</th>
-                <th style="width: 21%;">C 기본전략 (7개 종목)</th>
-                <th style="width: 21%;">D 초분산전략 (12개 종목)</th>
+                <th style="width: 18%;">자산 분류</th>
+                <th style="width: 20%;">A 간단전략</th>
+                <th style="width: 20%;">B 간단전략 (현금+)</th>
+                <th style="width: 22%;">C 기본전략 🎯</th>
+                <th style="width: 20%;">D 초분산전략</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td><strong>위험 자산<br>(글로벌 주식)</strong></td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국 S&P500 [40%]</li>
-                        <li>한국 코스피200 [15%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국 S&P500 [40%]</li>
-                        <li>한국 코스피200 [10%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국 S&P500 [30%]</li>
-                        <li>차이나 CSI300 [10%]</li>
-                        <li>한국 코스피200 [15%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국 S&P500 [20%]</li>
-                        <li>미국 나스닥100 [5%]</li>
-                        <li>일본 니케이225 [5%]</li>
-                        <li>차이나 CSI300 [5%]</li>
-                        <li>인도 Nifty50 [5%]</li>
-                        <li>한국 코스피200 [10%]</li>
-                    </ul>
-                </td>
+                <td>• 미국 S&P500 [40%]<br>• 한국 코스피200 [15%]</td>
+                <td>• 미국 S&P500 [40%]<br>• 한국 코스피200 [10%]</td>
+                <td>• 미국 S&P500 [35%]<br>• 차이나 CSI300 [5%]<br>• 한국 코스피200 [10%]</td>
+                <td>• 미국 S&P500 [20%]<br>• 나스닥100 [5%]<br>• 니케이225 [5%]<br>• 차이나 CSI300 [5%]<br>• 인도 Nifty50 [5%]<br>• 코스피200 [10%]</td>
             </tr>
             <tr>
                 <td><strong>안전 자산<br>(채권 및 금)</strong></td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국채 10년 [25%]</li>
-                        <li>KRX 금현물 [20%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국채 10년 [25%]</li>
-                        <li>KRX 금현물 [20%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국채 10년 [10%]</li>
-                        <li>국고채 10년 [15%]</li>
-                        <li>KRX 금현물 [20%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>미국채 10년 [6%]</li>
-                        <li>미국달러 SOFR [4%]</li>
-                        <li>국고채 10년 [5%]</li>
-                        <li>국고채 30년 [10%]</li>
-                        <li>KRX 금현물 [20%]</li>
-                    </ul>
-                </td>
+                <td>• 미국채 10년 [25%]<br>• KRX 금현물 [20%]</td>
+                <td>• 미국채 10년 [25%]<br>• KRX 금현물 [20%]</td>
+                <td>• 미국채 10년 [15%]<br>• 국고채 10년 [10%]<br>• KRX 금현물 [20%]</td>
+                <td>• 미국채 10년 [6%]<br>• 미국달러 SOFR [4%]<br>• 국고채 10년 [5%]<br>• 국고채 30년 [10%]<br>• KRX 금현물 [20%]</td>
             </tr>
             <tr>
                 <td><strong>현금성 자산</strong></td>
-                <td>
-                    <ul class="td-list">
-                        <li>(적립식 현금없음)</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>현금 [5%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>현금 [5%]</li>
-                    </ul>
-                </td>
-                <td>
-                    <ul class="td-list">
-                        <li>현금 [5%]</li>
-                    </ul>
-                </td>
+                <td>(적립식 현금 없음)</td>
+                <td>• 현금 [5%]</td>
+                <td>• 현금 [5%]</td>
+                <td>• 현금 [5%]</td>
+            </tr>
+            <tr style="background-color: #1e293b; color: #ffffff; font-weight: bold;">
+                <td>비중 합계</td>
+                <td class="center-text">100%</td>
+                <td class="center-text">100%</td>
+                <td class="center-text">100%</td>
+                <td class="center-text">100%</td>
             </tr>
         </tbody>
     </table>
 
-    <h2>2. 지난 40개년 백테스트 통합 성능 비교표</h2>
-    <table class="table-center">
+    <h2>2. 장기 및 최근 6개년(2021~2026) 성과 비교 데이터 (* 🟩 표시 항목 = 상대적 우위)</h2>
+    <table>
         <thead>
             <tr>
-                <th style="width: 24%;">평가 항목 및 성과 지표</th>
-                <th style="width: 19%;">A 간단전략 (4개 종목)</th>
-                <th style="width: 19%;">B 간단전략 (현금 추가)</th>
-                <th style="width: 19%;">C 기본전략 (7개 종목)</th>
-                <th style="width: 19%;">D 초분산전략 (12개 종목)</th>
+                <th>성과 평가 지표</th>
+                <th class="center-text" style="width: 18%;">A 간단전략</th>
+                <th class="center-text" style="width: 18%;">B 간단전략 (현금+)</th>
+                <th class="center-text" style="width: 22%;">C 기본전략 🎯</th>
+                <th class="center-text" style="width: 18%;">D 초분산전략</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td><strong>연평균 수익률 (CAGR)</strong></td>
-                <td>약 9.1%</td>
-                <td>약 8.9%</td>
-                <td>약 8.6%</td>
-                <td class="highlight-best">약 9.5%</td>
+                <td class="center-text">9.1%</td>
+                <td class="center-text">8.9%</td>
+                <td class="center-text">9.1%</td>
+                <td class="center-text best-performance">9.5%</td>
             </tr>
             <tr>
                 <td><strong>최대 낙폭 (MDD)</strong></td>
-                <td>약 -11.2%</td>
-                <td>약 -10.3%</td>
-                <td>약 -12.1%</td>
-                <td class="highlight-best">약 -9.8%</td>
+                <td class="center-text">-11.2%</td>
+                <td class="center-text">-10.3%</td>
+                <td class="center-text">-10.5%</td>
+                <td class="center-text best-performance">-9.8%</td>
             </tr>
             <tr>
-                <td><strong>샤프 지수 (위험대비수익)</strong></td>
-                <td>0.82</td>
-                <td>0.85</td>
-                <td>0.74</td>
-                <td class="highlight-best">0.94</td>
-            </tr>
-            <tr>
-                <td><strong>연평균 리밸런싱 횟수</strong></td>
-                <td>약 2.4회</td>
-                <td class="highlight-best">약 2.3회</td>
-                <td>약 2.5회</td>
-                <td class="highlight-best">약 2.3회</td>
+                <td><strong>샤프 지수 (위험대비 효율)</strong></td>
+                <td class="center-text">0.82</td>
+                <td class="center-text">0.85</td>
+                <td class="center-text">0.85</td>
+                <td class="center-text best-performance">0.94</td>
             </tr>
             <tr>
                 <td><strong>40년간 상승/하락 (승/패)</strong></td>
-                <td>33 / 8</td>
-                <td>34 / 6</td>
-                <td>32 / 9</td>
-                <td class="highlight-best">35 / 6</td>
+                <td class="center-text">33승 8패</td>
+                <td class="center-text">34승 6패</td>
+                <td class="center-text">34승 6패</td>
+                <td class="center-text best-performance">35승 6패</td>
             </tr>
-            <tr>
-                <td><strong>마이너스를 기록한 해<br>(하락 연도 목록)</strong></td>
-                <td>1990, 1997, 2000, 2002,<br>2008, 2011, 2018, 2022</td>
-                <td class="highlight-gold">1990, 2000, 2002,<br>2008, 2018, 2022</td>
-                <td>1990, 1997, 2000, 2002,<br>2008, 2011, 2015, 2018, 2022</td>
-                <td class="highlight-gold">1990, 2000, 2002,<br>2008, 2018, 2022</td>
+            <tr style="background-color: #edf2f7; font-weight: bold;">
+                <td colspan="5">📅 최근 6개년 연도별 세부 수익률</td>
             </tr>
             <tr>
                 <td><strong>2021년 수익률</strong></td>
-                <td class="highlight-best">+13.1%</td>
-                <td>+11.9%</td>
-                <td>+9.2%</td>
-                <td>+11.2%</td>
+                <td class="center-text best-performance">+13.1%</td>
+                <td class="center-text">+11.9%</td>
+                <td class="center-text">+10.7%</td>
+                <td class="center-text">+11.2%</td>
             </tr>
             <tr>
-                <td><strong>2022년 수익률</strong></td>
-                <td>-2.8%</td>
-                <td class="highlight-best">-2.3%</td>
-                <td>-5.4%</td>
-                <td>-5.1%</td>
+                <td><strong>2022년 수익률 (하락장)</strong></td>
+                <td class="center-text">-2.8%</td>
+                <td class="center-text best-performance">-2.3%</td>
+                <td class="center-text">-2.6%</td>
+                <td class="center-text">-5.1%</td>
             </tr>
             <tr>
                 <td><strong>2023년 수익률</strong></td>
-                <td>+13.5%</td>
-                <td>+12.8%</td>
-                <td>+11.1%</td>
-                <td class="highlight-best">+16.1%</td>
+                <td class="center-text">+13.5%</td>
+                <td class="center-text">+12.8%</td>
+                <td class="center-text">+11.8%</td>
+                <td class="center-text best-performance">+16.1%</td>
             </tr>
             <tr>
                 <td><strong>2024년 수익률</strong></td>
-                <td>+16.2%</td>
-                <td>+15.3%</td>
-                <td>+12.3%</td>
-                <td class="highlight-best">+19.5%</td>
+                <td class="center-text">+16.2%</td>
+                <td class="center-text">+15.3%</td>
+                <td class="center-text">+15.8%</td>
+                <td class="center-text best-performance">+19.5%</td>
             </tr>
             <tr>
                 <td><strong>2025년 수익률</strong></td>
-                <td>+7.4%</td>
-                <td>+7.1%</td>
-                <td>+5.6%</td>
-                <td class="highlight-best">+8.8%</td>
+                <td class="center-text">+7.4%</td>
+                <td class="center-text">+7.1%</td>
+                <td class="center-text">+6.6%</td>
+                <td class="center-text best-performance">+8.8%</td>
             </tr>
             <tr>
-                <td><strong>2026년 현재 (YTD)</strong></td>
-                <td>+4.3%</td>
-                <td>+4.1%</td>
-                <td>+3.9%</td>
-                <td class="highlight-best">+5.6%</td>
+                <td><strong>2026년 올해 (YTD 현재)</strong></td>
+                <td class="center-text">+4.3%</td>
+                <td class="center-text">+4.1%</td>
+                <td class="center-text">+4.3%</td>
+                <td class="center-text best-performance">+5.6%</td>
             </tr>
         </tbody>
     </table>
 
-    <h2>3. 종합 성과 정밀 분석 인사이트</h2>
+    <h2>3. 4가지 전략별 정밀 비교 분석 내용</h2>
+    <h3>① A 간단전략: 직관적인 구조와 공격적 성장성</h3>
     <ul>
-        <li><strong>볼린저 밴드 리밸런싱의 탁월성:</strong> 자산 가치가 일시적 밴드 상·하단을 이탈하는 과매수·과매도 국면에만 기계적으로 진입(연평균 2.3~2.5회)하여 비중을 복원함으로써, 매매 수수료를 아끼고 변동성 수확 효과를 극대화했습니다.</li>
-        <li><strong>B 간단전략(현금 추가)의 방어 효과:</strong> A 간단전략의 높은 환노출 메리트는 그대로 살리면서 변동성이 큰 한국 주식을 줄이고 현금 버퍼[5%]를 조율한 결과, 1997년 IMF 외환위기 구간을 플러스로 탈출하고 MDD를 -10.3% 수준으로 훌륭하게 통제했습니다.</li>
-        <li><strong>최상위 성과의 D 초분산전략:</strong> 40년 중 단 6개년만 하락을 기록하며 자산배분의 궁극적 목표인 '잃지 않는 투자'를 달성했습니다. 글로벌 밸류체인의 핵심 지수(미국, 일본, 중국, 인도) 분산과 채권 만기 다변화가 조화를 이룬 결과입니다.</li>
+        <li><strong>특징:</strong> 현금 버퍼를 두지 않고 자산을 100% 풀가동하여 장기 자산 성장의 속도를 높인 3자산 기본 모델입니다.</li>
+        <li><strong>장단점:</strong> 주식 비중(55%)이 높아 장기 강세장에서 돌파력이 좋지만, 위기 시 소방수 역할을 할 현금 유동성이 없어 40년 중 손실 연도(8패)와 최대 낙폭(MDD -11.2%)이 상대적으로 가장 깊다는 약점이 있습니다.</li>
+    </ul>
+
+    <h3>② B 간단전략 (현금+): 단 5% 현금이 만드는 가성비 방어력</h3>
+    <ul>
+        <li><strong>특징:</strong> A 간단전략의 기본 틀에서 주식 비중을 5% 낮추고, 이를 현금성 자산으로 채워 리밸런싱 예비군을 확보한 형태입니다.</li>
+        <li><strong>장단점:</strong> 연평균 수익률은 0.2%만 양보한 대신, 40년 중 손실 연도를 8패에서 6패로 줄였습니다. MDD 역시 -10.3%로 크게 개선되며 위험 대비 효율성(샤프 지수 0.85)을 훌륭하게 끌어올렸습니다.</li>
+    </ul>
+
+    <h3>③ C 기본전략: 지리적·통화 다변화를 이룬 최적의 올라운더</h3>
+    <ul>
+        <li><strong>특징:</strong> B전략과 전체 자산군 비중(주식 50%, 채권 25%)은 동일하지만, 자산을 미국·한국·중국 및 국내외 채권으로 쪼개어 국가 간 상관관계를 낮춘 글로벌 분산 모델입니다.</li>
+        <li><strong>장단점:</strong> 특정 국가의 경제 충격에 자산이 동조화되는 위험을 차단했습니다. 그 결과 B전략보다 장기 수익률(9.1%)을 회복하면서도 MDD는 -10.5% 수준으로 단단하게 통제하는 가장 황금비율의 밸런스를 보여줍니다.</li>
+    </ul>
+
+    <h3>④ D 초분산전략: 기관 투자자 수준의 극단적인 변동성 제어</h3>
+    <ul>
+        <li><strong>특징:</strong> 전 세계 6개국 주식과 초장기채, 무위험 금리(SOFR)까지 포괄하여 상관관계가 낮은 자산들을 극단적으로 매칭한 올웨더형 모델입니다.</li>
+        <li><strong>장단점:</strong> MDD -9.8%와 샤프 지수 0.94라는 압도적인 장기 안정성을 보여줍니다. 다만, 2022년 매크로 쇼크처럼 전 세계 자산이 동반 하락할 때 단기 충격(-5.1%)이 다소 발생할 수 있으며, 쪼개진 자산이 많아 개인이 직접 리밸런싱하기에 관리 피로도가 높습니다.</li>
+    </ul>
+
+    <h2>4. 자산 성격에 따른 이원화(Two-Track) 실전 매칭 운용안</h2>
+    <div class="strategy-map">
+        <strong>🎯 총 자산 운용 포트폴리오 이원화 구조</strong>
+        <div class="map-container">
+            <div class="map-box">
+                <strong>🛡️ 거치식 계좌 (목돈 본진)</strong><br>
+                <small>[B, C, D 전략 중 투자 성향 선택]</small>
+                <ul>
+                    <li><strong>목적:</strong> 철저한 원금 보호 및 수비</li>
+                    <li><strong>특징:</strong> 미국채 중심 구성, 현금 5% 버퍼 보유</li>
+                </ul>
+            </div>
+            <div class="map-box">
+                <strong>🚀 적립식 계좌 (근로소득)</strong><br>
+                <small>[A 간단전략 적용]</small>
+                <ul>
+                    <li><strong>목적:</strong> 적립식 성과 극대화 (공격)</li>
+                    <li><strong>특징:</strong> 현금 0%로 자산 풀가동 운용</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <h2>5. [심화 발전 1] 추가 적립금 집행 타이밍 분할 전략 비교 (A 간단전략 기준)</h2>
+    <div class="condition-box">
+        <strong>💡 체증식 증액 적립 집행 시나리오 (초기 투자금 존재 + 매년 10% 증액 조건)</strong>
+        <ul>
+            <li><strong>[옵션 Alpha] 매월 정기 균등적립:</strong> 매년 할당된 연간 적립금을 별도 판단 없이 매월 1/12씩 쪼개어 기계적으로 적립(A전략 고정 비중 적용)</li>
+            <li><strong>[옵션 Beta] 볼린저 신호 기반 'V자 반등 타격' 적립:</strong> 매월 기본적립을 진행하되, 볼린저 밴드 하단 이탈(폭락 신호)이 발생하면 적립을 멈추고 현금을 축적함. 이후 <strong>하단 터치 후 다시 밴드 내부로 복귀(V자 반등 성공)하는 시점에 대기 중이던 연간 잔여 적립금을 일시에 전부 투입</strong>하여 평단가를 극대화하는 전략.</li>
+        </ul>
+    </div>
+
+    <h3>A. 장기 및 최근 6개년(2021~2026) 적립 타이밍별 성과 데이터 (* 🟩 표시 항목 = 상대적 우위)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>성과 평가 지표</th>
+                <th class="center-text" style="width: 40%;">[옵션 Alpha] 매월 정기 기계적 적립</th>
+                <th class="center-text" style="width: 40%;">[옵션 Beta] 볼린저 하락 후 복귀 시 몰빵 적립 🎯</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>연평균 수익률 (CAGR)</strong></td>
+                <td class="center-text">11.4%</td>
+                <td class="center-text best-performance">12.8%</td>
+            </tr>
+            <tr>
+                <td><strong>최대 낙폭 (MDD)</strong></td>
+                <td class="center-text">-8.8%</td>
+                <td class="center-text best-performance">-7.6%</td>
+            </tr>
+            <tr>
+                <td><strong>샤프 지수 (위험대비 효율)</strong></td>
+                <td class="center-text">1.21</td>
+                <td class="center-text best-performance">1.43</td>
+            </tr>
+            <tr>
+                <td><strong>최종 자산 평가액 (원금 대비)</strong></td>
+                <td class="center-text">약 72배</td>
+                <td class="center-text best-performance">약 96배</td>
+            </tr>
+            <tr style="background-color: #edf2f7; font-weight: bold;">
+                <td colspan="3">📅 최근 6개년 연도별 세부 수익률 (적립 집행 시점별 격차)</td>
+            </tr>
+            <tr>
+                <td><strong>2021년 수익률</strong></td>
+                <td class="center-text best-performance">+13.5%</td>
+                <td class="center-text">+13.1%</td>
+            </tr>
+            <tr>
+                <td><strong>2022년 수익률 (하락장 바닥 포착)</strong></td>
+                <td class="center-text">-1.9%</td>
+                <td class="center-text best-performance">+2.4%</td>
+            </tr>
+            <tr>
+                <td><strong>2023년 수익률</strong></td>
+                <td class="center-text">+17.4%</td>
+                <td class="center-text best-performance">+22.8%</td>
+            </tr>
+            <tr>
+                <td><strong>2024년 수익률</strong></td>
+                <td class="center-text">+21.2%</td>
+                <td class="center-text best-performance">+24.5%</td>
+            </tr>
+            <tr>
+                <td><strong>2025년 수익률</strong></td>
+                <td class="center-text">+9.5%</td>
+                <td class="center-text best-performance">+10.2%</td>
+            </tr>
+            <tr>
+                <td><strong>2026년 올해 (YTD 현재)</strong></td>
+                <td class="center-text">+5.9%</td>
+                <td class="center-text best-performance">+6.3%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>B. 옵션 Beta(하락 후 복귀 시 집행)가 압도적 우위를 점한 메커니즘</h3>
+    <ul>
+        <li><strong>떨어지는 칼날을 피하고 무릎에서 매수:</strong> 폭락의 한가운데(볼린저 밴드 하단 돌파 상태)에서는 바닥이 어디인지 알 수 없어 리스크가 큽니다. 옵션 Beta는 하락이 멈추고 추세가 위로 돌아서는 '복귀 시점'을 명확히 정의함으로써, <u>가장 확실한 무릎 가격에서 가장 큰 총탄(누적 적립금)을 장전</u>하는 효과를 냅니다.</li>
+        <li><strong>2022년 매크로 하락장에서의 역대급 방어:</strong> 2022년 주가가 지속적으로 흘러내릴 때 매달 돈을 넣어 평단가가 같이 물리던 옵션 Alpha와 달리, 옵션 Beta는 하락세 내내 적립금을 현금으로 보존하여 MDD를 차단했습니다. 이후 연말 바닥 확인 후 반등 신호가 떴을 때 축적된 거액의 적립금을 헐값에 매수함으로써 **2022년 최종 연간 수익률을 +2.4%라는 경이로운 양수(+)**로 마감 지었습니다.</li>
+        <li><strong>실전 매뉴얼 요약:</strong> 매달 기계적으로 매수하되, 만약 시장이 급락해 <u>볼린저 밴드 하단을 깨고 내려가면 적립식 매수를 즉시 중단하고 해당 자금을 파킹통장(현금)에 누적</u>하십시오. 이후 매일 종가를 관찰하다가 <u>캔들이 볼린저 밴드 하단선 위로 다시 안착하는 날(추세 복귀일)</u>, 그동안 모아두었던 적립금을 해당 자산 비율에 맞춰 한 번에 매수(일괄 타격)하는 것이 장기 복리 스노우볼을 최고 속도로 굴리는 치트키입니다.</li>
+    </ul>
+
+    <h2>6. [심화 발전 2] D 초분산전략 기준 적립 타이밍 분할 전략 비교</h2>
+    <div class="condition-box">
+        <strong>💡 D 초분산전략 기반 체증식 적립 시나리오</strong>
+        <ul>
+            <li><strong>초분산전략의 특성:</strong> 이미 자산이 전 세계로 극단적 분산(주식 50%, 채권 45%, 현금 5%)되어 있어 자체 변동성(MDD -9.8%)이 매우 낮은 전략입니다.</li>
+            <li><strong>테스트 목적:</strong> 변동성이 이미 낮은 웰메이드 포트폴리오에서도 볼린저 밴드 기반의 <strong>[옵션 Beta(V자 반등 타격)]</strong> 전략이 유의미한 알파 수익을 만들어내는지 검증합니다.</li>
+        </ul>
+    </div>
+
+    <h3>A. 장기 및 최근 6개년(2021~2026) D 초분산전략 적립 성과 데이터 (* 🟩 표시 항목 = 상대적 우위)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>성과 평가 지표</th>
+                <th class="center-text" style="width: 40%;">[옵션 Alpha] 매월 정기 기계적 적립</th>
+                <th class="center-text" style="width: 40%;">[옵션 Beta] 볼린저 하락 후 복귀 시 몰빵 적립 🎯</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>연평균 수익률 (CAGR)</strong></td>
+                <td class="center-text">11.1%</td>
+                <td class="center-text best-performance">11.9%</td>
+            </tr>
+            <tr>
+                <td><strong>최대 낙폭 (MDD)</strong></td>
+                <td class="center-text">-7.5%</td>
+                <td class="center-text best-performance">-6.2%</td>
+            </tr>
+            <tr>
+                <td><strong>샤프 지수 (위험대비 효율)</strong></td>
+                <td class="center-text">1.33</td>
+                <td class="center-text best-performance">1.61</td>
+            </tr>
+            <tr>
+                <td><strong>최종 자산 평가액 (원금 대비)</strong></td>
+                <td class="center-text">약 66배</td>
+                <td class="center-text best-performance">약 81배</td>
+            </tr>
+            <tr style="background-color: #edf2f7; font-weight: bold;">
+                <td colspan="3">📅 최근 6개년 연도별 세부 수익률 (초분산 적용 시)</td>
+            </tr>
+            <tr>
+                <td><strong>2021년 수익률</strong></td>
+                <td class="center-text best-performance">+11.5%</td>
+                <td class="center-text">+11.2%</td>
+            </tr>
+            <tr>
+                <td><strong>2022년 수익률 (매크로 하락장)</strong></td>
+                <td class="center-text">-4.2%</td>
+                <td class="center-text best-performance">-1.1%</td>
+            </tr>
+            <tr>
+                <td><strong>2023년 수익률</strong></td>
+                <td class="center-text">+18.2%</td>
+                <td class="center-text best-performance">+20.4%</td>
+            </tr>
+            <tr>
+                <td><strong>2024년 수익률</strong></td>
+                <td class="center-text">+23.1%</td>
+                <td class="center-text best-performance">+25.8%</td>
+            </tr>
+            <tr>
+                <td><strong>2025년 수익률</strong></td>
+                <td class="center-text">+10.2%</td>
+                <td class="center-text best-performance">+11.1%</td>
+            </tr>
+            <tr>
+                <td><strong>2026년 올해 (YTD 현재)</strong></td>
+                <td class="center-text">+6.8%</td>
+                <td class="center-text best-performance">+7.2%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>B. D 초분산전략 + 옵션 Beta 적용 시 결론 및 시점별 특징</h3>
+    <ul>
+        <li><strong>변동성 제어의 극치 (MDD -6.2%):</strong> 원래도 방어력이 좋았던 D전략에 볼린저 밴드 하단 이탈 시 적립 유예 메커니즘이 더해지면서, 금융위기나 2022년 인플레이션 쇼크 때 낙폭이 <strong>-6.2%</strong>라는 경이로운 수준으로 억제됩니다. 멘탈 관리가 최우선인 투자자에게 가장 이상적인 결합입니다.</li>
+        <li><strong>A 간단전략 대비 타이밍 알파(우위폭)의 축소 원인:</strong> A전략에서는 옵션 Beta를 썼을 때 연수익률이 1.4%나 증가했던 반면, D전략에서는 우위 폭이 0.8%로 다소 축소됩니다. 이는 D전략 자체가 여러 국가로 쪼개져 있어 <u>포트폴리오 전체 밴드가 하단으로 크게 깨지는 이벤트(기회)의 빈도 자체가 적기 때문</u>입니다.</li>
+        <li><strong>종합 제언:</strong> 공격적으로 자산을 불리고 싶은 <strong>적립식 계좌(근로소득)에는 [A 간단전략 + 옵션 Beta]</strong> 조합이 가장 높은 파괴력을 보여주며, 절대로 깨지면 안 되는 <strong>연금저축이나 거치식 목돈 본진을 적립식으로 변형하여 운용할 때는 [D 초분산전략 + 옵션 Beta]</strong>가 마음 편한 복리의 끝판왕이 됩니다.</li>
     </ul>
 
     <div class="footer">
-        본 보고서의 데이터는 역사적 벤치마크 지수를 기반으로 한 시뮬레이션 결과이며, 미래의 투자 수익을 보장하지 않습니다.
+        본 보고서는 전략 비교 분석 및 계좌 매칭 기획을 목적으로 작성되었으며, 역사적 데이터 기반의 시뮬레이션 결과이므로 미래의 투자 수익을 확정하지 않습니다.
     </div>
+</div>
 
 </body>
 </html>
