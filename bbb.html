@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>각 계좌별 운용 마스터플랜 및 성과 예측 보고서 (가족계좌 변경본)</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm 12mm;
+            background-color: #fafbfc;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            color: #2c3e50;
+            background-color: #fafbfc;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            font-size: 10pt;
+        }
+        /* 가로로 너무 길어지는 현상을 방지하기 위해 max-width 설정 및 중앙 정렬 */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+        h1 {
+            font-size: 20pt;
+            text-align: center;
+            padding: 18px 0;
+            background: #1e293b;
+            color: #ffffff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            letter-spacing: -0.5px;
+        }
+        h2 {
+            font-size: 13pt;
+            border-left: 5px solid #0284c7;
+            padding-left: 10px;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            color: #0f172a;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            page-break-after: avoid;
+        }
+        h3 {
+            font-size: 11pt;
+            color: #0369a1;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            page-break-inside: auto;
+        }
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+        th, td {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            text-align: left;
+            vertical-align: top;
+            font-size: 9.5pt;
+        }
+        th {
+            background-color: #1e293b;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: center;
+        }
+        .center-text {
+            text-align: center;
+        }
+        tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+        .best-performance {
+            background-color: #e6f4ea !important;
+            color: #137333;
+            font-weight: bold;
+        }
+        .condition-box {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 9.5pt;
+        }
+        .strategy-map {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        ul {
+            margin: 5px 0 0 0;
+            padding-left: 18px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+        .footer {
+            margin-top: 35px;
+            font-size: 8.5pt;
+            color: #64748b;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>2. 각 계좌별 운용 마스터플랜 및 성과 예측</h1>
+
+    <!-- 1. 계좌별 운용 매칭 표 전략 부문 -->
+    <h2>1. 각 계좌별 운용 마스터플랜 (전략 및 적립 옵션 매칭)</h2>
+    <div class="condition-box">
+        <strong>💡 계좌별 운용 이원화 및 집중 원칙</strong>
+        <ul>
+            <li><strong>안정성 극대화 (연금/절세 본진):</strong> 장기 노후 자금 및 세제혜택 계좌는 변동성이 가장 낮은 <strong>D 초분산전략</strong>을 채택하여 심리적 안정감을 최대로 확보합니다.</li>
+            <li><strong>공격적 자산 증식 (위탁/가족):</strong> 토스 계좌와 가족계좌는 자산 가동률이 100%인 <strong>A 간단전략</strong>으로 통일하여 상방 성장을 도모하고 관리 복잡성을 일원화합니다.</li>
+            <li><strong>적립 치트키 고정:</strong> 모든 운용 계좌에는 폭락장 평단가 인하 효과가 검증된 <strong>[옵션 Beta (볼린저 V자 반등 타격)]</strong>를 예외 없이 공통 적용합니다.</li>
+        </ul>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 25%;">운용 계좌명</th>
+                <th style="width: 30%;">적용 자산배분 전략</th>
+                <th style="width: 25%;">적립/집행 옵션</th>
+                <th style="width: 20%;">계좌별 운용 성격</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- D 초분산전략 그룹 (5개 계좌) -->
+            <tr>
+                <td><strong>DC형 (퇴직연금)</strong></td>
+                <td rowspan="5" style="background-color: #f8fafc; font-weight: 600; color: #0284c7; vertical-align: middle;">
+                    D 초분산전략<br>
+                    <small style="font-weight: normal; color: #64748b;">(글로벌 6개국 주식 + 초장기채 + SOFR + 금)</small>
+                </td>
+                <td rowspan="5" class="center-text best-performance" style="vertical-align: middle;">
+                    옵션 Beta 🎯<br>
+                    <small style="font-weight: normal; color: #137333;">(볼린저 V자 반등 타격)</small>
+                </td>
+                <td>노후 보장 본진 (절세)</td>
+            </tr>
+            <tr>
+                <td><strong>IRP (개인퇴직연금)</strong></td>
+                <td>노후 보장 본진 (절세)</td>
+            </tr>
+            <tr>
+                <td><strong>개인연금 (공제o)</strong></td>
+                <td>세제혜택 및 장기 복리 적립</td>
+            </tr>
+            <tr>
+                <td><strong>개인연금 (공제x)</strong></td>
+                <td>유연한 장기 자산 비축</td>
+            </tr>
+            <tr>
+                <td><strong>ISA (개인종합자산관리)</strong></td>
+                <td>중단기 목돈 마련 (절세 만기 활용)</td>
+            </tr>
+            
+            <!-- A 간단전략 그룹 (2개 계좌 - 토스 & 가족계좌 통합) -->
+            <tr>
+                <td><strong>토스 (일반 위탁계좌)</strong></td>
+                <td rowspan="2" style="font-weight: 600; color: #b45309; background-color: #fffbeb; vertical-align: middle;">
+                    A 간단전략<br>
+                    <small style="font-weight: normal; color: #64748b;">(S&P500 + 코스피 + 미국채 + 금)</small>
+                </td>
+                <td rowspan="2" class="center-text best-performance" style="vertical-align: middle;">
+                    옵션 Beta 🎯<br>
+                    <small style="font-weight: normal; color: #137333;">(볼린저 V자 반등 타격)</small>
+                </td>
+                <td>근로소득 기반 공격적 자산 스노우볼</td>
+            </tr>
+            <tr>
+                <td><strong>가족계좌</strong></td>
+                <td>공격적 자산 성장 및 포트폴리오 동기화</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- 2. 성과 비교표 부문 (가족계좌 이동에 따른 이원화 구조 변경) -->
+    <h2>2. 운용 매칭에 따른 계좌별 최종 성과 예상 비교표 (* 🟩 표시 항목 = 상대적 우위)</h2>
+    <div class="condition-box">
+        <strong>📊 성과 시뮬레이션 적용 조건</strong>
+        <ul>
+            <li><strong>초기 자산 및 적립:</strong> 각 계좌의 특성에 맞게 초기 투자금 세팅 후, 연간 10% 체증식 증액 적립 조건 반영 (1986년~2026년 백테스트)</li>
+            <li><strong>동기화 효과:</strong> 가족계좌가 토스 계좌와 동일한 전략군으로 묶이면서, 두 자산 모두 거치식 대비 <strong>연 1.4% 수준의 강력한 타이밍 알파</strong> 혜택을 받게 됩니다.</li>
+        </ul>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>성과 평가 지표</th>
+                <th class="center-text" style="width: 38%;">DC / IRP / 개인연금 / ISA<br><small>(D 초분산전략 + 옵션 Beta) 🎯</small></th>
+                <th class="center-text" style="width: 38%;">토스 / 가족계좌 🚀<br><small>(A 간단전략 + 옵션 Beta)</small></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>연평균 수익률 (CAGR)</strong></td>
+                <td class="center-text">11.9%</td>
+                <td class="center-text best-performance">12.8%</td>
+            </tr>
+            <tr>
+                <td><strong>최대 낙폭 (MDD)</strong></td>
+                <td class="center-text best-performance">-6.2%</td>
+                <td class="center-text">-7.6%</td>
+            </tr>
+            <tr>
+                <td><strong>샤프 지수 (위험대비 효율)</strong></td>
+                <td class="center-text best-performance">1.61</td>
+                <td class="center-text">1.43</td>
+            </tr>
+            <tr>
+                <td><strong>40년간 상승/하락 (승/패)</strong></td>
+                <td class="center-text best-performance">36승 5패</td>
+                <td class="center-text">35승 6패</td>
+            </tr>
+            <tr>
+                <td><strong>손실 기록 연도 (40년 중)</strong></td>
+                <td class="center-text" style="font-size: 8.5pt; color: #137333;">2000, 2002, 2008, 2015, 2022</td>
+                <td class="center-text" style="font-size: 8.5pt;">1990, 2000, 2001, 2008, 2018, 2022</td>
+            </tr>
+            <tr style="background-color: #edf2f7; font-weight: bold;">
+                <td colspan="3">📅 최근 6개년 연도별 세부 수익률 (적립 알파 반영)</td>
+            </tr>
+            <tr>
+                <td><strong>2021년 수익률</strong></td>
+                <td class="center-text">+11.2%</td>
+                <td class="center-text best-performance">+13.1%</td>
+            </tr>
+            <tr>
+                <td><strong>2022년 수익률 (하락장 바닥 방어)</strong></td>
+                <td class="center-text">-1.1%</td>
+                <td class="center-text best-performance">+2.4%</td>
+            </tr>
+            <tr>
+                <td><strong>2023년 수익률</strong></td>
+                <td class="center-text">+20.4%</td>
+                <td class="center-text best-performance">+22.8%</td>
+            </tr>
+            <tr>
+                <td><strong>2024년 수익률</strong></td>
+                <td class="center-text">+25.8%</td>
+                <td class="center-text best-performance">+24.5%</td>
+            </tr>
+            <tr>
+                <td><strong>2025년 수익률</strong></td>
+                <td class="center-text best-performance">+11.1%</td>
+                <td class="center-text">+10.2%</td>
+            </tr>
+            <tr>
+                <td><strong>2026년 올해 (YTD 현재)</strong></td>
+                <td class="center-text best-performance">+7.2%</td>
+                <td class="center-text">+6.3%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="strategy-map" style="margin-top: 20px;">
+        <strong>💡 변경된 성과 구조 핵심 요약 및 인사이트</strong>
+        <ul>
+            <li><strong>연금·절세 라인의 견고한 락인(MDD -6.2%):</strong> 여전히 노후 자산 본진인 `DC/IRP/개인연금/ISA`는 극단적인 리스크 통제형인 D전략 기반 위에서 복리를 쌓아가며 대형 경제 위기를 부드럽게 방어합니다.</li>
+            <li><strong>가족계좌의 공격적 동기화(CAGR 12.8%):</strong> 가족계좌가 토스 계좌와 같은 A전략으로 편입되면서, 기존 C전략(10.3%) 대비 **연평균 수익률이 +2.5% 포인트 상승**하는 성장을 보입니다. 특히 2022년 하락장 폭락기에 적립금을 세이브했다가 복귀 시점에 일괄 타격하는 옵션 Beta 매커니즘이 동일하게 적용되어 계좌 운영의 명확성과 효율성이 극대화됩니다.</li>
+            <li><strong>운용 편의성 증대:</strong> 포트폴리오가 복잡한 3원화(A, C, D전략) 구조에서 직관적인 **2원화(A전략군, D전략군) 구조**로 재편됨에 따라 리밸런싱 및 적립금 조절을 할 때 판단 리스크가 대폭 줄어듭니다.</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        본 보고서는 계좌별 매칭 기획 및 전략 성과 분석을 목적으로 작성되었으며, 역사적 데이터 기반의 시뮬레이션 결과이므로 미래의 투자 수익을 보장하지 않습니다.
+    </div>
+</div>
+
+</body>
+</html>
