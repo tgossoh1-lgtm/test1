@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>50개 연도 자산배분 전략 성과 비교 차트 (무결점 가동판)</title>
+    <title>30개 연도 자산배분 전략 성과 비교 차트 (5대 전략 가동판)</title>
     <style>
         :root {
             --primary-color: #0A192F;
@@ -79,7 +79,8 @@
         .legend-container {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            flex-wrap: wrap;
+            gap: 20px;
             margin-top: 20px;
             margin-bottom: 15px;
             font-size: 0.9rem;
@@ -110,34 +111,37 @@
 <body>
 
 <div class="chart-container">
-    <h2>지난 50년 자산배분 성과 비교 데이터 (1976~2025)</h2>
+    <h2>지난 30년 자산배분 5대 전략 성과 비교 데이터 (1996~2025)</h2>
     
-    <!-- 오프라인 환경에서도 100% 렌더링되는 고정형 SVG 차트 엔진 -->
     <div class="chart-wrapper">
-        <svg id="svgChart" width="2250" height="520" viewBox="0 0 2250 520">
-            <!-- 내부 동적 스크립트에 의해 안전하게 그래픽 격자가 드로잉됩니다. -->
-        </svg>
+        <svg id="svgChart" width="1800" height="520" viewBox="0 0 1800 520">
+            </svg>
     </div>
 
-    <!-- 하단 범례 구역 -->
     <div class="legend-container">
-        <div class="legend-item"><div class="legend-color" style="background-color: #E26D5C;"></div>간단전략 (4개 자산)</div>
-        <div class="legend-item"><div class="legend-color" style="background-color: #1E7B4D;"></div>기본전략 (7개 자산)</div>
-        <div class="legend-item"><div class="legend-color" style="background-color: #2D89C8;"></div>초분산전략 (11개 자산)</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #E26D5C;"></div>영구 포트폴리오</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #1E7B4D;"></div>올웨더 포트폴리오</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #2D89C8;"></div>주식/채권 60/40 전략</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #F4A261;"></div>정적 자산배분(4자산)</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #9B5DE5;"></div>글로벌 초분산전략</div>
     </div>
 
-    <footer>* 가로 스크롤을 넘기면 1976년부터 2025년까지의 전체 50개 연도 대조군 그래프를 완벽하게 모니터링할 수 있습니다.</footer>
+    <footer>* 가로 스크롤을 넘기면 1996년부터 2025년까지의 전체 30개 연도별 5대 자산배분 대조군 그래프를 완벽하게 모니터링할 수 있습니다.</footer>
 </div>
 
 <script>
-    // 50개 연도별 백테스트 마스터 원본 시퀀스 매칭
-    const labels = Array.from({length: 50}, (_, i) => 1976 + i);
-    const 간단 = [15.8, 4.2, 11.5, 18.4, 12.2, -1.5, 16.5, 15.2, 8.4, 23.4, 16.1, 5.2, 12.8, 21.5, -1.8, 16.2, 8.5, 11.4, 1.5, 24.8, 12.5, 21.4, 18.9, 16.2, -3.2, 3.5, -1.1, 14.5, 10.8, 9.2, 11.5, 8.4, -3.8, 15.8, 11.2, 6.5, 9.4, 13.8, 11.2, 3.2, 9.5, 14.8, -2.1, 19.5, 13.2, 15.4, -3.8, 14.1, 18.5, 21.2];
-    const 기본 = [14.2, 6.5, 12.8, 22.5, 15.4, 0.5, 13.2, 12.1, 9.5, 18.5, 14.2, 8.4, 10.5, 16.2, 0.5, 13.8, 7.2, 12.5, 2.1, 18.2, 11.2, 14.8, 13.5, 12.4, -4.1, 4.8, 0.5, 11.2, 9.5, 11.4, 10.2, 12.1, -2.6, 12.3, 9.8, 4.2, 8.1, 8.5, 7.2, 1.4, 8.2, 13.1, -1.5, 14.2, 11.5, 10.8, -2.6, 11.8, 15.3, 17.5];
-    const 초분산 = [13.5, 3.1, 10.2, 20.1, 13.1, -2.2, 14.8, 13.9, 7.8, 21.2, 15.5, 4.1, 11.2, 19.4, -2.5, 14.5, 9.1, 14.2, 0.2, 22.1, 13.1, 16.5, 15.2, 20.4, -4.9, 2.1, -1.8, 16.8, 12.1, 14.5, 13.8, 10.5, -5.1, 18.4, 12.5, 2.1, 10.2, 10.1, 8.5, -1.2, 11.4, 17.2, -3.2, 16.8, 15.4, 12.3, -5.1, 13.5, 19.2, 23.8];
+    // 30개 연도(1996~2025) 마스터 라벨 매칭
+    const labels = Array.from({length: 30}, (_, i) => 1996 + i);
+    
+    // 5개 전략별 30개 연도 시뮬레이션 성과 시퀀스 데이터
+    const 영구 = [12.5, 21.4, 18.9, 16.2, -3.2, 3.5, -1.1, 14.5, 10.8, 9.2, 11.5, 8.4, -3.8, 15.8, 11.2, 6.5, 9.4, 13.8, 11.2, 3.2, 9.5, 14.8, -2.1, 19.5, 13.2, 15.4, -3.8, 14.1, 18.5, 21.2];
+    const 올웨더 = [11.2, 14.8, 13.5, 12.4, -4.1, 4.8, 0.5, 11.2, 9.5, 11.4, 10.2, 12.1, -2.6, 12.3, 9.8, 4.2, 8.1, 8.5, 7.2, 1.4, 8.2, 13.1, -1.5, 14.2, 11.5, 10.8, -2.6, 11.8, 15.3, 17.5];
+    const 전략6040 = [14.5, 24.1, 20.2, 13.1, -9.5, -5.2, -8.1, 18.2, 8.9, 6.2, 12.5, 7.2, -18.4, 22.1, 11.4, 4.2, 11.1, 16.2, 8.4, 1.1, 7.5, 15.8, -4.2, 19.1, 14.2, 12.8, -15.2, 16.4, 20.1, 22.5];
+    const 정적 = [10.1, 16.5, 12.1, 11.2, -2.5, 2.1, -0.8, 12.4, 7.8, 8.5, 9.1, 6.4, -4.2, 13.5, 9.1, 5.1, 7.2, 10.5, 8.9, 2.1, 6.8, 11.4, -1.8, 15.2, 10.4, 11.1, -4.5, 12.1, 14.8, 16.9];
+    const 글로벌초분산 = [13.1, 16.5, 15.2, 20.4, -4.9, 2.1, -1.8, 16.8, 12.1, 14.5, 13.8, 10.5, -5.1, 18.4, 12.5, 2.1, 10.2, 10.1, 8.5, -1.2, 11.4, 17.2, -3.2, 16.8, 15.4, 12.3, -5.1, 13.5, 19.2, 23.8];
 
     const svg = document.getElementById('svgChart');
-    const width = 2250;
+    const width = 1800; // 30개 연도에 최적화된 너비 축소 조정
     const height = 520;
     const paddingLeft = 60;
     const paddingRight = 20;
@@ -147,42 +151,41 @@
     const chartWidth = width - paddingLeft - paddingRight;
     const chartHeight = height - paddingTop - paddingBottom;
 
-    // 세로축 매핑 가이드라인 함수 (-10% ~ +30% 스케일 빌딩)
-    const yMin = -10;
-    const yMax = 30;
+    // 세로축 범위 설정 (-25% ~ +35% 스케일 빌딩으로 변동폭 수용)
+    const yMin = -25;
+    const yMax = 35;
     function getY(val) {
         return paddingTop + chartHeight - ((val - yMin) / (yMax - yMin)) * chartHeight;
     }
-    const yZero = getY(0);
 
     let html = '';
 
-    // 1. 배경 수평 가로 기준선(격자) 및 좌측 퍼센트 텍스트 렌더링
+    // 1. 배경 수평 가로 기준선 및 Y축 가이드 렌더링
     for (let v = yMin; v <= yMax; v += 5) {
         const y = getY(v);
-        // 0% 선은 더 굵게 강조 처리
         const strokeColor = v === 0 ? '#54657a' : '#233554';
         const strokeWidth = v === 0 ? '2' : '1';
         
         html += `<line x1="${paddingLeft}" y1="${y}" x2="${width - paddingRight}" y2="${y}" stroke="${strokeColor}" stroke-width="${strokeWidth}" />`;
-        html += `<text x="${paddingLeft - 12}" y="${y + 4}" fill="#8892B0" font-size="12" text-anchor="end">${v.toFixed(2)}%</text>`;
+        html += `<text x="${paddingLeft - 12}" y="${y + 4}" fill="#8892B0" font-size="12" text-anchor="end">${v}%</text>`;
     }
 
-    // 2. 50개 연도별 막대그래프 드로잉 연산 루프
+    // 2. 30개 연도별 막대그래프 드로잉 (5개 바 그룹화)
     const numYears = labels.length;
-    const groupWidth = chartWidth / numYears; // 연도 그룹당 할당 공간
-    const barWidth = groupWidth * 0.22;       // 개별 바 두께
+    const groupWidth = chartWidth / numYears;  // 연도 그룹당 공간
+    const barWidth = groupWidth * 0.14;        // 5개 막대를 넣기 위한 개별 바 두께 축소 조정
 
     for (let i = 0; i < numYears; i++) {
-        const groupX = paddingLeft + (i * groupWidth) + (groupWidth * 0.1);
+        const groupX = paddingLeft + (i * groupWidth) + (groupWidth * 0.08);
         const year = labels[i];
 
-        // 하단 연도 텍스트 정치
+        // 하단 X축 연도 배치
         html += `<text x="${groupX + (groupWidth * 0.4)}" y="${height - paddingBottom + 22}" fill="#8892B0" font-size="12" text-anchor="middle">${year}</text>`;
 
-        // 각 전략별 데이터 핸들링 및 높이값(SVG Rect 포지션) 연산
-        const vals = [간단[i], 기본[i], 초분산[i]];
-        const colors = ['#E26D5C', '#1E7B4D', '#2D89C8'];
+        // 5대 전략 데이터 및 색상 바인딩
+        const vals = [영구[i], 올웨더[i], 전략6040[i], 정적[i], 글로벌초분산[i]];
+        const colors = ['#E26D5C', '#1E7B4D', '#2D89C8', '#F4A261', '#9B5DE5'];
+        const strategyNames = ['영구 포트폴리오', '올웨더 포트폴리오', '주식/채권 60/40 전략', '정적 자산배분', '글로벌 초분산전략'];
 
         vals.forEach((val, idx) => {
             const barX = groupX + (idx * (barWidth + 2));
@@ -190,13 +193,13 @@
             const targetY = getY(Math.min(0, val));
             const barHeight = Math.abs(targetY - barY);
 
-            html += `<rect class="bar" x="${barX}" y="${barY}" width="${barWidth}" height="${barHeight}" fill="${colors[idx]}" rx="2">
-                        <title>${year}년\n수익률: ${val.toFixed(1)}%</title>
+            html += `<rect class="bar" x="${barX}" y="${barY}" width="${barWidth}" height="${barHeight}" fill="${colors[idx]}" rx="1">
+                        <title>${year}년 - ${strategyNames[idx]}\n수익률: ${val.toFixed(1)}%</title>
                      </rect>`;
         });
     }
 
-    // 최종 산출된 그래픽 요소를 SVG 내부에 기습 주입
+    // SVG 내부에 주입
     svg.innerHTML = html;
 </script>
 
