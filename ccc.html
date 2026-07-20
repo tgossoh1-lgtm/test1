@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>30개 연도 자산배분 전략 성과 비교 차트 (4대 지정 전략판)</title>
+    <title>40개 연도 자산배분 전략 성과 비교 차트 (4대 지정 전략판)</title>
     <style>
         :root {
             --primary-color: #0A192F;
@@ -46,7 +46,7 @@
             letter-spacing: -0.5px;
         }
 
-        /* 스크롤 가능한 차트 캔버스 영역 */
+        /* 40개년 데이터 수용을 위해 스크롤 가로 폭을 2400으로 확장 */
         .chart-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -111,10 +111,10 @@
 <body>
 
 <div class="chart-container">
-    <h2>지난 30년 자산배분 전략 성과 비교 데이터 (1996~2025)</h2>
+    <h2>지난 40년 자산배분 전략 성과 비교 데이터 (1987~2026)</h2>
     
     <div class="chart-wrapper">
-        <svg id="svgChart" width="1800" height="520" viewBox="0 0 1800 520">
+        <svg id="svgChart" width="2400" height="520" viewBox="0 0 2400 520">
             </svg>
     </div>
 
@@ -125,21 +125,21 @@
         <div class="legend-item"><div class="legend-color" style="background-color: #2D89C8;"></div>D 초분산전략</div>
     </div>
 
-    <footer>* 가로 스크롤을 넘기면 1996년부터 2025년까지의 전체 30개 연도별 4대 자산배분 대조군 그래프를 완벽하게 모니터링할 수 있습니다.</footer>
+    <footer>* 가로 스크롤을 우측으로 넘기면 1987년부터 2026년(YTD)까지의 전체 40개 연도별 4대 자산배분 대조군 그래프를 완벽하게 모니터링할 수 있습니다.</footer>
 </div>
 
 <script>
-    // 30개 연도(1996~2025) 마스터 라벨 매칭
-    const labels = Array.from({length: 30}, (_, i) => 1996 + i);
+    // 1. 40개 연도(1987~2026) 마스터 라벨 매칭
+    const labels = Array.from({length: 40}, (_, i) => 1987 + i);
     
-    // 4개 전략별 30개 연도 시뮬레이션 성과 시퀀스 데이터
-    const 전략A = [15.8, 4.2, 11.5, 18.4, 12.2, -1.5, 16.5, 15.2, 8.4, 23.4, 16.1, 5.2, 12.8, 21.5, -1.8, 16.2, 8.5, 11.4, 1.5, 24.8, 12.5, 21.4, 18.9, 16.2, -3.2, 3.5, -1.1, 14.5, 10.8, 21.2];
-    const 전략B = [12.1, 5.5, 9.8, 14.2, 11.0, 1.2, 13.0, 11.5, 7.9, 18.2, 13.4, 6.1, 10.2, 16.8, 0.8, 12.5, 7.9, 10.0, 2.5, 19.1, 10.8, 16.5, 14.2, 13.1, -1.5, 4.0, 0.2, 11.9, 9.7, 16.8];
-    const 전략C = [14.2, 6.5, 12.8, 22.5, 15.4, 0.5, 13.2, 12.1, 9.5, 18.5, 14.2, 8.4, 10.5, 16.2, 0.5, 13.8, 7.2, 12.5, 2.1, 18.2, 11.2, 14.8, 13.5, 12.4, -4.1, 4.8, 0.5, 11.2, 9.5, 17.5];
-    const 전략D = [13.5, 3.1, 10.2, 20.1, 13.1, -2.2, 14.8, 13.9, 7.8, 21.2, 15.5, 4.1, 11.2, 19.4, -2.5, 14.5, 9.1, 14.2, 0.2, 22.1, 13.1, 16.5, 15.2, 20.4, -4.9, 2.1, -1.8, 16.8, 12.1, 23.8];
+    // 2. 4개 전략별 40개 연도 시뮬레이션 성과 시퀀스 데이터 (주요 이벤트 연도 정밀 주입)
+    const 전략A = [7.2, 9.5, 5.2, 6.9, 6.6, 10.2, 9.7, 11.2, 5.6, 8.0, 18.5, 5.2, 6.5, -4.2, 8.5, 5.2, 6.4, 9.5, 8.8, 6.5, 9.1, -8.5, 10.7, 5.0, 10.6, 9.9, 7.4, 6.1, 11.7, 7.4, 5.6, -1.4, 14.2, 10.5, 13.1, -2.8, 13.5, 16.2, 7.4, 4.3];
+    const 전략B = [6.8, 9.2, 4.9, 6.6, 6.3, 9.9, 9.4, 10.9, 5.3, 7.7, 17.2, 4.9, 6.2, -3.8, 8.2, 4.9, 6.1, 9.2, 8.5, 6.2, 8.8, -7.9, 10.4, 4.7, 10.3, 9.6, 7.1, 5.8, 11.4, 7.1, 5.3, -1.1, 13.8, 10.1, 12.5, -2.3, 12.9, 15.3, 7.0, 4.0];
+    const 전략C = [5.9, 9.6, 5.3, 7.0, 6.7, 10.3, 9.8, 11.3, 5.7, 8.1, 13.5, 5.3, 6.6, -4.9, 8.6, 5.3, 6.5, 9.6, 8.9, 6.6, 9.2, -8.2, 10.8, 5.1, 10.7, 10.0, 7.5, 6.2, 11.8, 7.5, 5.7, -5.2, 15.1, 11.9, 9.0, -2.6, 10.8, 15.8, 5.3, 3.7];
+    const 전략D = [6.2, 10.0, 5.7, 7.4, 7.1, 10.7, 10.2, 11.7, 6.1, 8.5, 15.1, 5.7, 7.0, -3.2, 9.0, 5.7, 6.9, 10.0, 9.3, 7.0, 9.6, -6.8, 11.2, 5.5, 11.1, 10.4, 7.9, 6.6, 12.2, 7.9, 6.1, -2.1, 15.8, 11.2, 11.2, -5.1, 16.1, 19.5, 8.8, 5.6];
 
     const svg = document.getElementById('svgChart');
-    const width = 1800; 
+    const width = 2400; 
     const height = 520;
     const paddingLeft = 60;
     const paddingRight = 20;
@@ -149,9 +149,9 @@
     const chartWidth = width - paddingLeft - paddingRight;
     const chartHeight = height - paddingTop - paddingBottom;
 
-    // 세로축 범위 설정 (-10% ~ +30% 스케일)
-    const yMin = -10;
-    const yMax = 30;
+    // 세로축 범위 설정 (-15% ~ +30% 스케일로 하락장 묘사 최적화)
+    const yMin = -15;
+    const yMax = 25;
     function getY(val) {
         return paddingTop + chartHeight - ((val - yMin) / (yMax - yMin)) * chartHeight;
     }
@@ -168,17 +168,17 @@
         html += `<text x="${paddingLeft - 12}" y="${y + 4}" fill="#8892B0" font-size="12" text-anchor="end">${v}%</text>`;
     }
 
-    // 2. 30개 연도별 막대그래프 드로잉 (4개 바 그룹화)
+    // 2. 40개 연도별 막대그래프 드로잉 (4개 바 그룹화)
     const numYears = labels.length;
     const groupWidth = chartWidth / numYears;  // 연도 그룹당 공간
-    const barWidth = groupWidth * 0.17;        // 4개 막대를 정렬하기 위한 최적 바 두께 계산
+    const barWidth = groupWidth * 0.17;        // 4개 막대를 정렬하기 위한 바 두께
 
     for (let i = 0; i < numYears; i++) {
-        const groupX = paddingLeft + (i * groupWidth) + (groupWidth * 0.1);
+        const groupX = paddingLeft + (i * groupWidth) + (groupWidth * 0.08);
         const year = labels[i];
 
-        // 하단 X축 연도 배치
-        html += `<text x="${groupX + (groupWidth * 0.38)}" y="${height - paddingBottom + 22}" fill="#8892B0" font-size="12" text-anchor="middle">${year}</text>`;
+        // 하단 X축 연도 배치 (글자 겹침 방지를 위해 12px 폰트 최적화)
+        html += `<text x="${groupX + (groupWidth * 0.35)}" y="${height - paddingBottom + 22}" fill="#8892B0" font-size="11" text-anchor="middle">${year}</text>`;
 
         // 4개 지정 전략 데이터 및 색상 바인딩
         const vals = [전략A[i], 전략B[i], 전략C[i], 전략D[i]];
