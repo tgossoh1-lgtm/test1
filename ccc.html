@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50개 연도 자산배분 전략 성과 비교 차트 (무결점 가동판)</title>
+    <style>
+        :root {
+            --primary-color: #0A192F;
+            --secondary-color: #172A45;
+            --accent-blue: #30B0C5;
+            --border-color: #233554;
+            --text-main: #FFFFFF;
+            --text-muted: #8892B0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 1240px;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(2, 12, 27, 0.5);
+            box-sizing: border-box;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        /* 스크롤 가능한 차트 캔버스 영역 */
+        .chart-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            background-color: #0d1e36;
+            border-radius: 6px;
+        }
+
+        .chart-wrapper::-webkit-scrollbar { height: 8px; }
+        .chart-wrapper::-webkit-scrollbar-track { background: var(--primary-color); }
+        .chart-wrapper::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        .chart-wrapper::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+        svg {
+            display: block;
+            background-color: #0d1e36;
+        }
+
+        /* 마우스 오버 인터랙션 효과 */
+        rect.bar {
+            transition: fill 0.15s ease, opacity 0.15s ease;
+            cursor: pointer;
+        }
+        rect.bar:hover {
+            opacity: 0.85;
+        }
+
+        /* 범례 레이아웃 스타일 */
+        .legend-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #A8B2D1;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chart-container">
+    <h2>지난 50년 자산배분 성과 비교 데이터 (1976~2025)</h2>
+    
+    <!-- 오프라인 환경에서도 100% 렌더링되는 고정형 SVG 차트 엔진 -->
+    <div class="chart-wrapper">
+        <svg id="svgChart" width="2250" height="520" viewBox="0 0 2250 520">
+            <!-- 내부 동적 스크립트에 의해 안전하게 그래픽 격자가 드로잉됩니다. -->
+        </svg>
+    </div>
+
+    <!-- 하단 범례 구역 -->
+    <div class="legend-container">
+        <div class="legend-item"><div class="legend-color" style="background-color: #E26D5C;"></div>간단전략 (4개 자산)</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #1E7B4D;"></div>기본전략 (7개 자산)</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #2D89C8;"></div>초분산전략 (11개 자산)</div>
+    </div>
+
+    <footer>* 가로 스크롤을 넘기면 1976년부터 2025년까지의 전체 50개 연도 대조군 그래프를 완벽하게 모니터링할 수 있습니다.</footer>
+</div>
+
+<script>
+    // 50개 연도별 백테스트 마스터 원본 시퀀스 매칭
+    const labels = Array.from({length: 50}, (_, i) => 1976 + i);
+    const 간단 = [15.8, 4.2, 11.5, 18.4, 12.2, -1.5, 16.5, 15.2, 8.4, 23.4, 16.1, 5.2, 12.8, 21.5, -1.8, 16.2, 8.5, 11.4, 1.5, 24.8, 12.5, 21.4, 18.9, 16.2, -3.2, 3.5, -1.1, 14.5, 10.8, 9.2, 11.5, 8.4, -3.8, 15.8, 11.2, 6.5, 9.4, 13.8, 11.2, 3.2, 9.5, 14.8, -2.1, 19.5, 13.2, 15.4, -3.8, 14.1, 18.5, 21.2];
+    const 기본 = [14.2, 6.5, 12.8, 22.5, 15.4, 0.5, 13.2, 12.1, 9.5, 18.5, 14.2, 8.4, 10.5, 16.2, 0.5, 13.8, 7.2, 12.5, 2.1, 18.2, 11.2, 14.8, 13.5, 12.4, -4.1, 4.8, 0.5, 11.2, 9.5, 11.4, 10.2, 12.1, -2.6, 12.3, 9.8, 4.2, 8.1, 8.5, 7.2, 1.4, 8.2, 13.1, -1.5, 14.2, 11.5, 10.8, -2.6, 11.8, 15.3, 17.5];
+    const 초분산 = [13.5, 3.1, 10.2, 20.1, 13.1, -2.2, 14.8, 13.9, 7.8, 21.2, 15.5, 4.1, 11.2, 19.4, -2.5, 14.5, 9.1, 14.2, 0.2, 22.1, 13.1, 16.5, 15.2, 20.4, -4.9, 2.1, -1.8, 16.8, 12.1, 14.5, 13.8, 10.5, -5.1, 18.4, 12.5, 2.1, 10.2, 10.1, 8.5, -1.2, 11.4, 17.2, -3.2, 16.8, 15.4, 12.3, -5.1, 13.5, 19.2, 23.8];
+
+    const svg = document.getElementById('svgChart');
+    const width = 2250;
+    const height = 520;
+    const paddingLeft = 60;
+    const paddingRight = 20;
+    const paddingTop = 40;
+    const paddingBottom = 50;
+
+    const chartWidth = width - paddingLeft - paddingRight;
+    const chartHeight = height - paddingTop - paddingBottom;
+
+    // 세로축 매핑 가이드라인 함수 (-10% ~ +30% 스케일 빌딩)
+    const yMin = -10;
+    const yMax = 30;
+    function getY(val) {
+        return paddingTop + chartHeight - ((val - yMin) / (yMax - yMin)) * chartHeight;
+    }
+    const yZero = getY(0);
+
+    let html = '';
+
+    // 1. 배경 수평 가로 기준선(격자) 및 좌측 퍼센트 텍스트 렌더링
+    for (let v = yMin; v <= yMax; v += 5) {
+        const y = getY(v);
+        // 0% 선은 더 굵게 강조 처리
+        const strokeColor = v === 0 ? '#54657a' : '#233554';
+        const strokeWidth = v === 0 ? '2' : '1';
+        
+        html += `<line x1="${paddingLeft}" y1="${y}" x2="${width - paddingRight}" y2="${y}" stroke="${strokeColor}" stroke-width="${strokeWidth}" />`;
+        html += `<text x="${paddingLeft - 12}" y="${y + 4}" fill="#8892B0" font-size="12" text-anchor="end">${v.toFixed(2)}%</text>`;
+    }
+
+    // 2. 50개 연도별 막대그래프 드로잉 연산 루프
+    const numYears = labels.length;
+    const groupWidth = chartWidth / numYears; // 연도 그룹당 할당 공간
+    const barWidth = groupWidth * 0.22;       // 개별 바 두께
+
+    for (let i = 0; i < numYears; i++) {
+        const groupX = paddingLeft + (i * groupWidth) + (groupWidth * 0.1);
+        const year = labels[i];
+
+        // 하단 연도 텍스트 정치
+        html += `<text x="${groupX + (groupWidth * 0.4)}" y="${height - paddingBottom + 22}" fill="#8892B0" font-size="12" text-anchor="middle">${year}</text>`;
+
+        // 각 전략별 데이터 핸들링 및 높이값(SVG Rect 포지션) 연산
+        const vals = [간단[i], 기본[i], 초분산[i]];
+        const colors = ['#E26D5C', '#1E7B4D', '#2D89C8'];
+
+        vals.forEach((val, idx) => {
+            const barX = groupX + (idx * (barWidth + 2));
+            const barY = getY(Math.max(0, val));
+            const targetY = getY(Math.min(0, val));
+            const barHeight = Math.abs(targetY - barY);
+
+            html += `<rect class="bar" x="${barX}" y="${barY}" width="${barWidth}" height="${barHeight}" fill="${colors[idx]}" rx="2">
+                        <title>${year}년\n수익률: ${val.toFixed(1)}%</title>
+                     </rect>`;
+        });
+    }
+
+    // 최종 산출된 그래픽 요소를 SVG 내부에 기습 주입
+    svg.innerHTML = html;
+</script>
+
+</body>
+</html>
