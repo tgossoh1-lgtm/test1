@@ -86,13 +86,13 @@
         tr:hover {
             background-color: #f9fafb;
         }
-        .highlight {
+        .highlight-nominal {
             font-weight: bold;
-            color: #dc2626; /* 추정 자산: 빨간색 */
+            color: #dc2626; /* 추정 자산(명목): 기존 빨간색 */
         }
-        .inflation {
-            color: #6b7280;
-            font-style: italic;
+        .highlight-real {
+            font-weight: bold;
+            color: #059669; /* 추정 자산(현재가치): 구분을 위한 초록색 */
         }
         .profit {
             color: #2563eb; /* 누적 수익: 파란색 */
@@ -137,8 +137,8 @@
                 <th>기간</th>
                 <th>연도(나이)</th>
                 <th>명목 누적원금</th>
-                <th>인플레 적용원금</th>
                 <th>추정 자산 (명목)</th>
+                <th>추정 자산 (현재가치기준)</th>
                 <th>누적 수익</th>
             </tr>
         </thead>
@@ -184,39 +184,41 @@
         
         let currentAsset = initAsset;
         let totalPrincipal = initAsset;
-        let inflatedPrincipal = initAsset;
         
         const resultBody = document.getElementById('resultBody');
         resultBody.innerHTML = ""; 
         
-        // 0년 차 (시작) 출력: 2026년 (25세) 형태로 조립
-        appendRow(0, `${currentYear}년 (${currentAge}세)`, totalPrincipal, inflatedPrincipal, currentAsset);
+        // 0년 차 (시작) 출력: 현재가치는 명목자산과 동일
+        appendRow(0, `${currentYear}년 (${currentAge}세)`, totalPrincipal, currentAsset, currentAsset);
 
         for (let year = 1; year <= 30; year++) {
             currentAsset = (currentAsset + yearlyAsset) * (1 + r);
             totalPrincipal += yearlyAsset;
-            inflatedPrincipal = (inflatedPrincipal + yearlyAsset) * (1 + inflationRate);
             
             // 5년 단위 출력
             if (year % 5 === 0) {
                 const targetYear = currentYear + year;
                 const targetAge = currentAge + year;
-                appendRow(year, `${targetYear}년 (${targetAge}세)`, totalPrincipal, inflatedPrincipal, currentAsset);
+                
+                // 추정 자산(현재가치기준) 계산: 미래 자산액 / (1 + 물가상승률)^경과년수
+                let realAsset = currentAsset / Math.pow(1 + inflationRate, year);
+                
+                appendRow(year, `${targetYear}년 (${targetAge}세)`, totalPrincipal, currentAsset, realAsset);
             }
         }
     }
 
-    function appendRow(year, yearAgeLabel, principal, infPrincipal, asset) {
+    function appendRow(year, yearAgeLabel, principal, nominalAsset, realAsset) {
         const resultBody = document.getElementById('resultBody');
-        const profit = asset - principal;
+        const profit = nominalAsset - principal;
         
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${year}년 차</td>
             <td>${yearAgeLabel}</td>
             <td>${formatKoreanMoney(principal)}</td>
-            <td class="inflation">${formatKoreanMoney(Math.round(infPrincipal))}</td>
-            <td class="highlight">${formatKoreanMoney(Math.round(asset))}</td>
+            <td class="highlight-nominal">${formatKoreanMoney(Math.round(nominalAsset))}</td>
+            <td class="highlight-real">${formatKoreanMoney(Math.round(realAsset))}</td>
             <td class="profit">${year === 0 ? '0원' : '+' + formatKoreanMoney(Math.round(profit))}</td>
         `;
         resultBody.appendChild(row);
