@@ -10,6 +10,7 @@
             --irp-color: #059669;
             --nontax-color: #d97706;
             --tax-color: #dc2626;
+            --expense-color: #9333ea;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-color: #1e293b;
@@ -275,11 +276,13 @@
         <div class="legend-item"><div class="legend-color" style="background-color: #059669;"></div>퇴직금 IRP</div>
         <div class="legend-item"><div class="legend-color" style="background-color: #d97706;"></div>미공제 연금저축</div>
         <div class="legend-item"><div class="legend-color" style="background-color: #dc2626;"></div>공제 연금저축</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #9333ea;"></div>연간 인출 필요생활비</div>
     </div>
 
     <!-- 설명 메모 -->
     <div class="legend-note">
         <strong>💡 인출 및 인상률 적용 규칙 (56세~90세 시뮬레이션):</strong><br>
+        • <strong>보라색 점선 (연간 인출 필요생활비):</strong> 물가상승률이 반영된 해당 연도 총필요생활비에서 국민연금 수령액을 차감한 <u>실제 계좌 인출 필요액</u> 추이입니다.<br>
         • <strong>인출 순서:</strong> [생활비 - 국민연금] 차액을 <u>1순위: 미공제 연금저축</u> ➔ <u>2순위: 퇴직금 IRP</u> ➔ <u>3순위: 세액공제 연금저축</u> 순서로 차출합니다.<br>
         • <strong>ISA 풍차돌리기 (56세~59세):</strong> 세액공제 연금저축에서 연 1,500만 원씩 인출 ➔ ISA ➔ 미공제 연금저축으로 옮겨 비과세 재원을 지속 충전합니다.<br>
         • <strong>생활비 & 연금 복리 인상:</strong> 초기 월 생활비와 국민연금 수령액은 매년 지정된 인상률(%)만큼 함께 복리로 증가합니다.
@@ -307,6 +310,7 @@
         let taxDeducted = [];
         let nonTaxDeducted = [];
         let irp = [];
+        let netExpenses = [];
 
         let curTaxDeducted = initTax;
         let curNonTaxDeducted = initNonTax;
@@ -327,8 +331,10 @@
                 nationalPension = baseAnnualPension * Math.pow(1 + incRate, age - startPensionAge);
             }
 
-            // 3. 실제 계좌에서 인출해야 하는 순필요 금액
+            // 3. 실제 계좌에서 인출해야 하는 순필요 금액 (보라색 선 데이터)
             let netExpense = Math.max(0, currentAnnualExpense - nationalPension);
+            netExpenses.push(Math.round(netExpense));
+
             let isaTransfer = (age <= 59) ? 1500 : 0;
 
             // 4. 세액공제 계좌에서 ISA 이전용 1,500만원 차출
@@ -366,7 +372,7 @@
             totalAssets.push(Math.round(total));
         }
 
-        return { ages, totalAssets, taxDeducted, nonTaxDeducted, irp, baseMonthly };
+        return { ages, totalAssets, taxDeducted, nonTaxDeducted, irp, netExpenses, baseMonthly };
     }
 
     function drawChart() {
@@ -413,7 +419,7 @@
         const chartWidth = width - paddingLeft - paddingRight;
         const chartHeight = height - paddingTop - paddingBottom;
 
-        let maxVal = Math.max(...data.totalAssets, ...data.irp, ...data.nonTaxDeducted, ...data.taxDeducted) * 1.05;
+        let maxVal = Math.max(...data.totalAssets, ...data.irp, ...data.nonTaxDeducted, ...data.taxDeducted, ...data.netExpenses) * 1.05;
         if (maxVal <= 0) maxVal = 1000;
 
         ctx.lineWidth = 1;
@@ -478,6 +484,8 @@
             }
         }
 
+        // 보라색 점선: 연간 인출 필요생활비
+        plotSeries(data.netExpenses, '#9333ea', 2, true); 
         plotSeries(data.taxDeducted, '#dc2626', 2);
         plotSeries(data.nonTaxDeducted, '#d97706', 2);
         plotSeries(data.irp, '#059669', 2, true);
