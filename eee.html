@@ -206,27 +206,17 @@
         <div class="section-title">💳 초기 계좌별 원금 입력 (55세 기준)</div>
         
         <div class="control-group">
-        <div class="control-label"><span>공제 받은 연금저축 (만 원)</span></div>
-        <input type="text" id="init-tax-deducted" class="input-number" value="13,000" inputmode="numeric" oninput="formatComma(this)">
+            <div class="control-label"><span>공제 받은 연금저축 (만 원)</span></div>
+            <input type="number" id="init-tax-deducted" class="input-number" value="13000" step="1000">
         </div>
-
         <div class="control-group">
-        <div class="control-label"><span>미공제 연금저축 (만 원)</span></div>
-        <input type="text" id="init-nontax-deducted" class="input-number" value="30,000" inputmode="numeric" oninput="formatComma(this)">
+            <div class="control-label"><span>미공제 연금저축 (만 원)</span></div>
+            <input type="number" id="init-nontax-deducted" class="input-number" value="30000" step="1000">
         </div>
-
         <div class="control-group">
-        <div class="control-label"><span>퇴직금 IRP (만 원)</span></div>
-        <input type="text" id="init-irp" class="input-number" value="50,000" inputmode="numeric" oninput="formatComma(this)">
-        </div>
-
-        <script>
-        function formatComma(el) {
-          // 숫자 이외 제거 후 3자리마다 콤마 추가
-          let val = el.value.replace(/[^0-9]/g, '');
-          el.value = val ? Number(val).toLocaleString('ko-KR') : '';
-        }
-        </script>
+            <div class="control-label"><span>퇴직금 IRP (만 원)</span></div>
+            <input type="number" id="init-irp" class="input-number" value="50000" step="1000">
+        </div> 
 
         <!-- 국민연금 및 물가상승률 설정 -->
         <div class="section-title" style="margin-top: 10px;">🏛️ 국민연금 및 생활비 인상률 설정</div>
