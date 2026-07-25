@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>은퇴 자산 및 계좌별 잔액 시뮬레이션 (56세~90세)</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --irp-color: #059669;
+            --nontax-color: #d97706;
+            --tax-color: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #0f172a;
+            text-align: center;
+        }
+
+        /* Metric Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background-color: #f1f5f9;
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .metric-title {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Controls Grid */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .input-number, .input-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            font-weight: 600;
+            color: #1e293b;
+            background-color: #ffffff;
+        }
+
+        .input-number:focus, .input-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 6px;
+            grid-column: 1 / -1;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 4px;
+        }
+
+        /* Canvas Chart Container */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Legend */
+        .legend-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+
+        .legend-note {
+            margin-top: 16px;
+            font-size: 0.82rem;
+            color: #475569;
+            line-height: 1.5;
+            background-color: #eff6ff;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📊 은퇴 자산 및 계좌별 잔액 시뮬레이션 (56세~90세)</h1>
+
+    <!-- 주요 지표 카드 -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-title">시작 총자산 (55세)</div>
+            <div class="metric-value" id="card-init-asset" style="color: #475569;">10.00 억 원</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">90세 예상 총자산</div>
+            <div class="metric-value" id="card-total-asset">0.00 억 원</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">국민연금 개시 시 월 수령액</div>
+            <div class="metric-value" id="card-pension">121 만 원</div>
+        </div>
+    </div>
+
+    <!-- 컨트롤 및 입력 영역 -->
+    <div class="controls-grid">
+        <!-- 계좌별 초기 원금 입력 -->
+        <div class="section-title">💳 초기 계좌별 원금 입력 (55세 기준)</div>
+        
+        <div class="control-group">
+            <div class="control-label"><span>공제 받은 연금저축 (만 원)</span></div>
+            <input type="number" id="init-tax-deducted" class="input-number" value="20000" step="1000">
+        </div>
+
+        <div class="control-group">
+            <div class="control-label"><span>미공제 연금저축 (만 원)</span></div>
+            <input type="number" id="init-nontax-deducted" class="input-number" value="30000" step="1000">
+        </div>
+
+        <div class="control-group">
+            <div class="control-label"><span>퇴직금 IRP (만 원)</span></div>
+            <input type="number" id="init-irp" class="input-number" value="50000" step="1000">
+        </div>
+
+        <!-- 국민연금 및 물가상승률 설정 -->
+        <div class="section-title" style="margin-top: 10px;">🏛️ 국민연금 및 생활비 인상률 설정</div>
+
+        <div class="control-group">
+            <div class="control-label"><span>수령 시작 나이</span></div>
+            <select id="pension-age" class="input-select">
+                <option value="60" selected>60세 (월 121만 원)</option>
+                <option value="61">61세 (월 131.4만 원)</option>
+                <option value="62">62세 (월 141.8만 원)</option>
+                <option value="63">63세 (월 152.2만 원)</option>
+                <option value="64">64세 (월 162.6만 원)</option>
+                <option value="65">65세 (월 173.0만 원 - 정상수령)</option>
+                <option value="66">66세 (월 185.5만 원)</option>
+                <option value="67">67세 (월 198.0만 원)</option>
+                <option value="68">68세 (월 210.4만 원)</option>
+                <option value="69">69세 (월 222.9만 원)</option>
+                <option value="70">70세 (월 235.3만 원)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <div class="control-label"><span>연간 인상률 (연금 & 생활비) (%)</span></div>
+            <input type="number" id="pension-rate" class="input-number" value="2.5" step="0.1" min="0" max="10">
+        </div>
+
+        <!-- 투자 조건 슬라이더 -->
+        <div class="section-title" style="margin-top: 10px;">📈 투자 및 초기 생활비 조건 설정</div>
+
+        <div class="control-group">
+            <div class="control-label">
+                <span>연간 투자 수익률 (CAGR)</span>
+                <span id="cagr-val" style="color: var(--primary-color);">8 %</span>
+            </div>
+            <input type="range" id="input-cagr" min="4" max="12" step="0.5" value="8">
+        </div>
+
+        <div class="control-group">
+            <div class="control-label">
+                <span>초기 월 필요 생활비 (56세 기준)</span>
+                <span id="expense-val" style="color: var(--primary-color);">400 만 원</span>
+            </div>
+            <input type="range" id="input-expense" min="300" max="600" step="10" value="400">
+        </div>
+    </div>
+
+    <!-- 순수 캔버스 차트 영역 -->
+    <div class="canvas-container">
+        <canvas id="customChart"></canvas>
+    </div>
+
+    <!-- 범례 표시 -->
+    <div class="legend-container">
+        <div class="legend-item"><div class="legend-color" style="background-color: #2563eb;"></div>전체 자산 합계</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #059669;"></div>퇴직금 IRP</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #d97706;"></div>미공제 연금저축</div>
+        <div class="legend-item"><div class="legend-color" style="background-color: #dc2626;"></div>공제 연금저축</div>
+    </div>
+
+    <!-- 설명 메모 -->
+    <div class="legend-note">
+        <strong>💡 인출 및 인상률 적용 규칙 (56세~90세 시뮬레이션):</strong><br>
+        • <strong>기간 확장:</strong> 은퇴 자산 흐름을 90세까지 시뮬레이션하여 장기 자산 고갈 여부 및 성장 추이를 확인할 수 있습니다.<br>
+        • <strong>생활비 & 연금 복리 인상:</strong> 초기 월 생활비와 국민연금 수령액은 매년 지정된 인상률(%)만큼 함께 복리로 증가합니다.<br>
+        • <strong>인출 순서:</strong> [생활비 - 국민연금] 차액을 <u>미공제 연금저축에서 우선 차출</u>하며, 잔액이 0원이 되면 <u>퇴직금 IRP에서 차출</u>합니다.<br>
+        • <strong>ISA 풍차돌리기 (56세~59세):</strong> 세액공제 연금저축에서 연 1,500만 원씩 인출 ➔ ISA ➔ 미공제 연금저축으로 옮겨 비과세 재원을 지속 충전합니다.
+    </div>
+</div>
+
+<script>
+    function getBaseMonthlyPension(startAge) {
+        const base65 = 173; 
+        if (startAge === 65) return base65;
+        if (startAge < 65) {
+            return Math.round(base65 * (1 - (65 - startAge) * 0.06) * 10) / 10;
+        } else {
+            return Math.round(base65 * (1 + (startAge - 65) * 0.072) * 10) / 10;
+        }
+    }
+
+    function calculateData(cagrPercent, monthlyExpense, initTax, initNonTax, initIrp, startPensionAge, pensionIncRate) {
+        const cagr = cagrPercent / 100;
+        const annualExpenseInitial = monthlyExpense * 12;
+        const incRate = pensionIncRate / 100;
+
+        let ages = [];
+        let totalAssets = [];
+        let taxDeducted = [];
+        let nonTaxDeducted = [];
+        let irp = [];
+
+        let curTaxDeducted = initTax;
+        let curNonTaxDeducted = initNonTax;
+        let curIrp = initIrp;
+
+        const baseMonthly = getBaseMonthlyPension(startPensionAge);
+        const baseAnnualPension = baseMonthly * 12;
+
+        for (let age = 56; age <= 90; age++) {
+            ages.push(age + "세");
+
+            // 1. 생활비 매년 인상률 반영 (56세 기준)
+            let currentAnnualExpense = annualExpenseInitial * Math.pow(1 + incRate, age - 56);
+
+            // 2. 국민연금 매년 인상률 반영 (개시 연령부터 시작)
+            let nationalPension = 0;
+            if (age >= startPensionAge) {
+                nationalPension = baseAnnualPension * Math.pow(1 + incRate, age - startPensionAge);
+            }
+
+            // 3. 실제 계좌에서 인출해야 하는 순필요 금액
+            let netExpense = Math.max(0, currentAnnualExpense - nationalPension);
+            let isaTransfer = (age <= 59) ? 1500 : 0;
+
+            // 4. 세액공제 계좌에서 ISA 이전용 1,500만원 차출
+            curTaxDeducted = Math.max(0, curTaxDeducted - isaTransfer);
+
+            // 5. 미공제 계좌에 ISA 이체분 유입
+            curNonTaxDeducted += isaTransfer;
+
+            // 6. 인출 순서: 미공제 연금저축 우선 차출 ➔ 부족분은 IRP 차출
+            if (curNonTaxDeducted >= netExpense) {
+                curNonTaxDeducted -= netExpense;
+            } else {
+                let shortage = netExpense - curNonTaxDeducted;
+                curNonTaxDeducted = 0;
+                curIrp = Math.max(0, curIrp - shortage);
+            }
+
+            // 7. 연말 투자 수익률 반영 (CAGR)
+            curTaxDeducted = curTaxDeducted * (1 + cagr);
+            curNonTaxDeducted = curNonTaxDeducted * (1 + cagr);
+            curIrp = curIrp * (1 + cagr);
+
+            let total = curTaxDeducted + curNonTaxDeducted + curIrp;
+
+            taxDeducted.push(Math.round(curTaxDeducted));
+            nonTaxDeducted.push(Math.round(curNonTaxDeducted));
+            irp.push(Math.round(curIrp));
+            totalAssets.push(Math.round(total));
+        }
+
+        return { ages, totalAssets, taxDeducted, nonTaxDeducted, irp, baseMonthly };
+    }
+
+    function drawChart() {
+        const cagr = parseFloat(document.getElementById('input-cagr').value);
+        const expense = parseInt(document.getElementById('input-expense').value);
+
+        const initTax = parseFloat(document.getElementById('init-tax-deducted').value) || 0;
+        const initNonTax = parseFloat(document.getElementById('init-nontax-deducted').value) || 0;
+        const initIrp = parseFloat(document.getElementById('init-irp').value) || 0;
+
+        const startPensionAge = parseInt(document.getElementById('pension-age').value);
+        const pensionIncRate = parseFloat(document.getElementById('pension-rate').value) || 0;
+
+        document.getElementById('cagr-val').innerText = cagr + ' %';
+        document.getElementById('expense-val').innerText = expense + ' 만 원';
+
+        const initTotalAsset = ((initTax + initNonTax + initIrp) / 10000).toFixed(2);
+        document.getElementById('card-init-asset').innerText = initTotalAsset + ' 억 원';
+
+        const data = calculateData(cagr, expense, initTax, initNonTax, initIrp, startPensionAge, pensionIncRate);
+        const finalTotal = (data.totalAssets[data.totalAssets.length - 1] / 10000).toFixed(2);
+        
+        document.getElementById('card-total-asset').innerText = finalTotal + ' 억 원';
+        document.getElementById('card-pension').innerText = data.baseMonthly + ' 만 원';
+
+        const canvas = document.getElementById('customChart');
+        const ctx = canvas.getContext('2d');
+
+        const rect = canvas.parentNode.getBoundingClientRect();
+        canvas.width = rect.width * window.devicePixelRatio;
+        canvas.height = rect.height * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+        const width = rect.width;
+        const height = rect.height;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const paddingLeft = 60;
+        const paddingRight = 20;
+        const paddingTop = 30;
+        const paddingBottom = 40;
+
+        const chartWidth = width - paddingLeft - paddingRight;
+        const chartHeight = height - paddingTop - paddingBottom;
+
+        let maxVal = Math.max(...data.totalAssets, ...data.irp, ...data.nonTaxDeducted, ...data.taxDeducted) * 1.05;
+        if (maxVal <= 0) maxVal = 1000;
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px -apple-system, sans-serif';
+        ctx.textAlign = 'right';
+
+        const yTicks = 5;
+        for (let i = 0; i <= yTicks; i++) {
+            let yVal = (maxVal / yTicks) * i;
+            let yPos = height - paddingBottom - (i / yTicks) * chartHeight;
+
+            ctx.beginPath();
+            ctx.moveTo(paddingLeft, yPos);
+            ctx.lineTo(width - paddingRight, yPos);
+            ctx.stroke();
+
+            let labelText = (yVal / 10000).toFixed(1) + '억';
+            ctx.fillText(labelText, paddingLeft - 8, yPos + 4);
+        }
+
+        const numPoints = data.ages.length;
+        const xStep = chartWidth / (numPoints - 1);
+        ctx.textAlign = 'center';
+
+        // 90세까지 연도가 길어지므로 2년 간격으로 라벨 표시하여 가독성 확보
+        for (let i = 0; i < numPoints; i++) {
+            let xPos = paddingLeft + i * xStep;
+            let yPos = height - paddingBottom + 20;
+            if (i % 2 === 0 || i === numPoints - 1) {
+                ctx.fillText(data.ages[i], xPos, yPos);
+            }
+        }
+
+        function plotSeries(seriesData, color, lineWidth, isDashed = false) {
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+
+            if (isDashed) {
+                ctx.setLineDash([4, 4]);
+            } else {
+                ctx.setLineDash([]);
+            }
+
+            for (let i = 0; i < numPoints; i++) {
+                let x = paddingLeft + i * xStep;
+                let y = height - paddingBottom - (seriesData[i] / maxVal) * chartHeight;
+
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            ctx.fillStyle = color;
+            for (let i = 0; i < numPoints; i++) {
+                let x = paddingLeft + i * xStep;
+                let y = height - paddingBottom - (seriesData[i] / maxVal) * chartHeight;
+                ctx.beginPath();
+                ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        plotSeries(data.taxDeducted, '#dc2626', 2);
+        plotSeries(data.nonTaxDeducted, '#d97706', 2);
+        plotSeries(data.irp, '#059669', 2, true);
+        plotSeries(data.totalAssets, '#2563eb', 3.5);
+    }
+
+    document.getElementById('input-cagr').addEventListener('input', drawChart);
+    document.getElementById('input-expense').addEventListener('input', drawChart);
+    document.getElementById('init-tax-deducted').addEventListener('input', drawChart);
+    document.getElementById('init-nontax-deducted').addEventListener('input', drawChart);
+    document.getElementById('init-irp').addEventListener('input', drawChart);
+    document.getElementById('pension-age').addEventListener('change', drawChart);
+    document.getElementById('pension-rate').addEventListener('input', drawChart);
+    
+    window.addEventListener('resize', drawChart);
+    window.onload = drawChart;
+</script>
+
+</body>
+</html>
