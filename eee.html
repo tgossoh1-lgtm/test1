@@ -42,7 +42,6 @@
             text-align: center;
         }
 
-        /* Metric Cards */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -70,7 +69,6 @@
             color: var(--primary-color);
         }
 
-        /* Controls Grid */
         .controls-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -128,7 +126,6 @@
             padding-bottom: 4px;
         }
 
-        /* Canvas Chart Container */
         .canvas-container {
             position: relative;
             width: 100%;
@@ -144,7 +141,6 @@
             display: block;
         }
 
-        /* Legend */
         .legend-container {
             display: flex;
             flex-wrap: wrap;
@@ -196,7 +192,7 @@
         </div>
         <div class="metric-card">
             <div class="metric-title">국민연금 개시 시 월 수령액</div>
-            <div class="metric-value" id="card-pension">121 만 원</div>
+            <div class="metric-value" id="card-pension">173 만 원</div>
         </div>
     </div>
 
@@ -206,15 +202,23 @@
         <div class="section-title">💳 초기 계좌별 원금 입력 (55세 기준)</div>
         
         <div class="control-group">
-            <div class="control-label"><span>공제 받은 연금저축 (만 원)</span></div>
+            <div class="control-label">
+                <span>공제 받은 연금저축 (만 원)</span>
+            </div>
             <input type="number" id="init-tax-deducted" class="input-number" value="14000" step="1000">
         </div>
+
         <div class="control-group">
-            <div class="control-label"><span>미공제 연금저축 (만 원)</span></div>
+            <div class="control-label">
+                <span>미공제 연금저축 (만 원)</span>
+            </div>
             <input type="number" id="init-nontax-deducted" class="input-number" value="31000" step="1000">
         </div>
+
         <div class="control-group">
-            <div class="control-label"><span>퇴직금 IRP (만 원)</span></div>
+            <div class="control-label">
+                <span>퇴직금 IRP (만 원)</span>
+            </div>
             <input type="number" id="init-irp" class="input-number" value="51000" step="1000">
         </div> 
 
@@ -222,24 +226,35 @@
         <div class="section-title" style="margin-top: 10px;">🏛️ 국민연금 및 생활비 인상률 설정</div>
 
         <div class="control-group">
-            <div class="control-label"><span>수령 시작 나이</span></div>
+            <div class="control-label">
+                <span>65세 기준 국민연금 월 수령액 (만 원)</span>
+            </div>
+            <input type="number" id="base-pension-65" class="input-number" value="173" step="1" min="0">
+        </div>
+
+        <div class="control-group">
+            <div class="control-label">
+                <span>수령 시작 나이</span>
+            </div>
             <select id="pension-age" class="input-select">
-                <option value="60" selected>60세 (월 121만 원)</option>
-                <option value="61">61세 (월 131.4만 원)</option>
-                <option value="62">62세 (월 141.8만 원)</option>
-                <option value="63">63세 (월 152.2만 원)</option>
-                <option value="64">64세 (월 162.6만 원)</option>
-                <option value="65">65세 (월 173.0만 원 - 정상수령)</option>
-                <option value="66">66세 (월 185.5만 원)</option>
-                <option value="67">67세 (월 198.0만 원)</option>
-                <option value="68">68세 (월 210.4만 원)</option>
-                <option value="69">69세 (월 222.9만 원)</option>
-                <option value="70">70세 (월 235.3만 원)</option>
+                <option value="60">60세</option>
+                <option value="61">61세</option>
+                <option value="62">62세</option>
+                <option value="63">63세</option>
+                <option value="64">64세</option>
+                <option value="65" selected>65세 (정상수령)</option>
+                <option value="66">66세</option>
+                <option value="67">67세</option>
+                <option value="68">68세</option>
+                <option value="69">69세</option>
+                <option value="70">70세</option>
             </select>
         </div>
 
         <div class="control-group">
-            <div class="control-label"><span>연간 인상률 (연금 & 생활비) (%)</span></div>
+            <div class="control-label">
+                <span>연간 인상률 (연금 & 생활비) (%)</span>
+            </div>
             <input type="number" id="pension-rate" class="input-number" value="3.0" step="0.1" min="0" max="10">
         </div>
 
@@ -270,16 +285,33 @@
 
     <!-- 범례 표시 -->
     <div class="legend-container">
-        <div class="legend-item"><div class="legend-color" style="background-color: #2563eb;"></div>전체 자산 합계</div>
-        <div class="legend-item"><div class="legend-color" style="background-color: #059669;"></div>퇴직금 IRP</div>
-        <div class="legend-item"><div class="legend-color" style="background-color: #d97706;"></div>미공제 연금저축</div>
-        <div class="legend-item"><div class="legend-color" style="background-color: #dc2626;"></div>공제 연금저축</div>
-        <div class="legend-item"><div class="legend-color" style="background-color: #9333ea;"></div>연간 인출 필요생활비</div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #2563eb;"></div>
+            전체 자산 합계
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #059669;"></div>
+            퇴직금 IRP
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #d97706;"></div>
+            미공제 연금저축
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #dc2626;"></div>
+            공제 연금저축
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: #9333ea;"></div>
+            연간 인출 필요생활비
+        </div>
     </div>
 
     <!-- 설명 메모 -->
     <div class="legend-note">
         <strong>💡 인출 및 인상률 적용 규칙 (56세~90세 시뮬레이션):</strong><br>
+        • <strong>국민연금 입력 기준:</strong> 사용자가 입력한 금액은 <u>65세 정상수령 기준 월 수령액</u>입니다. 수령 시작 나이에 따라 조기수령 또는 연기수령 금액이 자동 계산됩니다.<br>
+        • <strong>조기수령/연기수령 반영:</strong> 65세보다 빠르게 수령하면 연 6% 감액, 65세보다 늦게 수령하면 연 7.2% 증액 기준으로 계산합니다.<br>
         • <strong>보라색 점선 (연간 인출 필요생활비):</strong> 물가상승률이 반영된 해당 연도 총필요생활비에서 국민연금 수령액을 차감한 <u>실제 계좌 인출 필요액</u> 추이입니다.<br>
         • <strong>인출 순서:</strong> [생활비 - 국민연금] 차액을 <u>1순위: 미공제 연금저축</u> ➔ <u>2순위: 퇴직금 IRP</u> ➔ <u>3순위: 세액공제 연금저축</u> 순서로 차출합니다.<br>
         • <strong>ISA 풍차돌리기 (56세~59세):</strong> 세액공제 연금저축에서 연 1,500만 원씩 인출 ➔ ISA ➔ 미공제 연금저축으로 옮겨 비과세 재원을 지속 충전합니다.<br>
@@ -288,17 +320,34 @@
 </div>
 
 <script>
-    function getBaseMonthlyPension(startAge) {
-        const base65 = 173; 
-        if (startAge === 65) return base65;
-        if (startAge < 65) {
-            return Math.round(base65 * (1 - (65 - startAge) * 0.06) * 10) / 10;
-        } else {
-            return Math.round(base65 * (1 + (startAge - 65) * 0.072) * 10) / 10;
+    function getBaseMonthlyPension(startAge, base65) {
+        if (startAge === 65) {
+            return Math.round(base65 * 10) / 10;
         }
+
+        // 조기수령: 65세 기준으로 1년 빠를 때마다 6% 감액
+        if (startAge < 65) {
+            return Math.round(
+                base65 * (1 - ((65 - startAge) * 0.06)) * 10
+            ) / 10;
+        }
+
+        // 연기수령: 65세 기준으로 1년 늦을 때마다 7.2% 증액
+        return Math.round(
+            base65 * (1 + ((startAge - 65) * 0.072)) * 10
+        ) / 10;
     }
 
-    function calculateData(cagrPercent, monthlyExpense, initTax, initNonTax, initIrp, startPensionAge, pensionIncRate) {
+    function calculateData(
+        cagrPercent,
+        monthlyExpense,
+        initTax,
+        initNonTax,
+        initIrp,
+        startPensionAge,
+        pensionIncRate,
+        basePension65
+    ) {
         const cagr = cagrPercent / 100;
         const annualExpenseInitial = monthlyExpense * 12;
         const incRate = pensionIncRate / 100;
@@ -314,7 +363,7 @@
         let curNonTaxDeducted = initNonTax;
         let curIrp = initIrp;
 
-        const baseMonthly = getBaseMonthlyPension(startPensionAge);
+        const baseMonthly = getBaseMonthlyPension(startPensionAge, basePension65);
         const baseAnnualPension = baseMonthly * 12;
 
         for (let age = 56; age <= 90; age++) {
@@ -329,7 +378,7 @@
                 nationalPension = baseAnnualPension * Math.pow(1 + incRate, age - startPensionAge);
             }
 
-            // 3. 실제 계좌에서 인출해야 하는 순필요 금액 (보라색 선 데이터)
+            // 3. 실제 계좌에서 인출해야 하는 순필요 금액
             let netExpense = Math.max(0, currentAnnualExpense - nationalPension);
             netExpenses.push(Math.round(netExpense));
 
@@ -357,7 +406,7 @@
                 }
             }
 
-            // 7. 연말 투자 수익률 반영 (CAGR)
+            // 7. 연말 투자 수익률 반영
             curTaxDeducted = curTaxDeducted * (1 + cagr);
             curNonTaxDeducted = curNonTaxDeducted * (1 + cagr);
             curIrp = curIrp * (1 + cagr);
@@ -370,7 +419,15 @@
             totalAssets.push(Math.round(total));
         }
 
-        return { ages, totalAssets, taxDeducted, nonTaxDeducted, irp, netExpenses, baseMonthly };
+        return {
+            ages,
+            totalAssets,
+            taxDeducted,
+            nonTaxDeducted,
+            irp,
+            netExpenses,
+            baseMonthly
+        };
     }
 
     function drawChart() {
@@ -383,6 +440,7 @@
 
         const startPensionAge = parseInt(document.getElementById('pension-age').value);
         const pensionIncRate = parseFloat(document.getElementById('pension-rate').value) || 0;
+        const basePension65 = parseFloat(document.getElementById('base-pension-65').value) || 0;
 
         document.getElementById('cagr-val').innerText = cagr + ' %';
         document.getElementById('expense-val').innerText = expense + ' 만 원';
@@ -390,11 +448,21 @@
         const initTotalAsset = ((initTax + initNonTax + initIrp) / 10000).toFixed(2);
         document.getElementById('card-init-asset').innerText = initTotalAsset + ' 억 원';
 
-        const data = calculateData(cagr, expense, initTax, initNonTax, initIrp, startPensionAge, pensionIncRate);
+        const data = calculateData(
+            cagr,
+            expense,
+            initTax,
+            initNonTax,
+            initIrp,
+            startPensionAge,
+            pensionIncRate,
+            basePension65
+        );
+
         const finalTotal = (data.totalAssets[data.totalAssets.length - 1] / 10000).toFixed(2);
         
         document.getElementById('card-total-asset').innerText = finalTotal + ' 억 원';
-        document.getElementById('card-pension').innerText = data.baseMonthly + ' 만 원';
+        document.getElementById('card-pension').innerText = data.baseMonthly.toLocaleString() + ' 만 원';
 
         const canvas = document.getElementById('customChart');
         const ctx = canvas.getContext('2d');
@@ -417,8 +485,17 @@
         const chartWidth = width - paddingLeft - paddingRight;
         const chartHeight = height - paddingTop - paddingBottom;
 
-        let maxVal = Math.max(...data.totalAssets, ...data.irp, ...data.nonTaxDeducted, ...data.taxDeducted, ...data.netExpenses) * 1.05;
-        if (maxVal <= 0) maxVal = 1000;
+        let maxVal = Math.max(
+            ...data.totalAssets,
+            ...data.irp,
+            ...data.nonTaxDeducted,
+            ...data.taxDeducted,
+            ...data.netExpenses
+        ) * 1.05;
+
+        if (maxVal <= 0) {
+            maxVal = 1000;
+        }
 
         ctx.lineWidth = 1;
         ctx.strokeStyle = '#e2e8f0';
@@ -427,6 +504,7 @@
         ctx.textAlign = 'right';
 
         const yTicks = 5;
+
         for (let i = 0; i <= yTicks; i++) {
             let yVal = (maxVal / yTicks) * i;
             let yPos = height - paddingBottom - (i / yTicks) * chartHeight;
@@ -447,6 +525,7 @@
         for (let i = 0; i < numPoints; i++) {
             let xPos = paddingLeft + i * xStep;
             let yPos = height - paddingBottom + 20;
+
             if (i % 2 === 0 || i === numPoints - 1) {
                 ctx.fillText(data.ages[i], xPos, yPos);
             }
@@ -467,15 +546,22 @@
                 let x = paddingLeft + i * xStep;
                 let y = height - paddingBottom - (seriesData[i] / maxVal) * chartHeight;
 
-                if (i === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
             }
+
             ctx.stroke();
 
             ctx.fillStyle = color;
+            ctx.setLineDash([]);
+
             for (let i = 0; i < numPoints; i++) {
                 let x = paddingLeft + i * xStep;
                 let y = height - paddingBottom - (seriesData[i] / maxVal) * chartHeight;
+
                 ctx.beginPath();
                 ctx.arc(x, y, 2.5, 0, Math.PI * 2);
                 ctx.fill();
@@ -483,10 +569,14 @@
         }
 
         // 보라색 점선: 연간 인출 필요생활비
-        plotSeries(data.netExpenses, '#9333ea', 2, true); 
+        plotSeries(data.netExpenses, '#9333ea', 2, true);
+
+        // 계좌별 자산
         plotSeries(data.taxDeducted, '#dc2626', 2);
         plotSeries(data.nonTaxDeducted, '#d97706', 2);
         plotSeries(data.irp, '#059669', 2, true);
+
+        // 전체 자산 합계
         plotSeries(data.totalAssets, '#2563eb', 3.5);
     }
 
@@ -495,6 +585,7 @@
     document.getElementById('init-tax-deducted').addEventListener('input', drawChart);
     document.getElementById('init-nontax-deducted').addEventListener('input', drawChart);
     document.getElementById('init-irp').addEventListener('input', drawChart);
+    document.getElementById('base-pension-65').addEventListener('input', drawChart);
     document.getElementById('pension-age').addEventListener('change', drawChart);
     document.getElementById('pension-rate').addEventListener('input', drawChart);
     
