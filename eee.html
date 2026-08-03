@@ -178,11 +178,12 @@
 <body>
 
 <div class="container">
-    <h1>📊 은퇴 자산 및 계좌별 잔액 시뮬레이션</h1>
+    <h1 id="main-title">📊 은퇴 자산 및 계좌별 잔액 시뮬레이션</h1>
 
+    <!-- 주요 지표 카드 -->
     <div class="metrics-grid">
         <div class="metric-card">
-            <div class="metric-title">시작 금융자산 (<span id="current-age-label"></span>)</div>
+            <div class="metric-title" id="card-init-title">은퇴 시점 시작 금융자산</div>
             <div class="metric-value" id="card-init-asset" style="color: #475569;">10.00 억 원</div>
         </div>
         <div class="metric-card">
@@ -195,30 +196,27 @@
         </div>
     </div>
 
+    <!-- 컨트롤 및 입력 영역 -->
     <div class="controls-grid">
+        <!-- 연령 설정 -->
+        <div class="section-title">👤 연령 환경 설정</div>
         
-        <!--
-        <div class="section-title">🎂 나이 설정</div>
-        -->
-
         <div class="control-group">
             <div class="control-label">
-                <span>현재 나이</span>
+                <span>현재 나이 (세)</span>
             </div>
-            <input type="number" id="current-age" class="input-number" value="55" min="40" max="90" step="1">
+            <input type="number" id="input-current-age" class="input-number" value="55" min="20" max="80" step="1">
         </div>
 
         <div class="control-group">
             <div class="control-label">
-                <span>은퇴 나이</span>
+                <span>은퇴 나이 (세)</span>
             </div>
-            <input type="number" id="retire-age" class="input-number" value="56" min="40" max="90" step="1">
+            <input type="number" id="input-retire-age" class="input-number" value="56" min="21" max="85" step="1">
         </div>
 
-        <!--
-        <div class="section-title">💳 은퇴시 계좌별 원금 입력</div>
-        -->
-         <div class="section-title">💳 은퇴시 계좌별 원금 입력, 🏛️ 국민연금 및 생활비 인상률, 📈 투자수익율 및 초기 생활비 조건 설정 </div>
+        <!-- 계좌별 은퇴 시점 원금 입력 -->
+        <div class="section-title" style="margin-top: 10px;" id="account-section-title">💳 은퇴 시점 계좌별 원금 입력</div>
         
         <div class="control-group">
             <div class="control-label">
@@ -241,13 +239,12 @@
             <input type="number" id="init-irp" class="input-number" value="55000" step="1000">
         </div> 
 
-        <!--
-        <div class="section-title" style="margin-top: 10px;">🏛️ 국민연금 및 생활비 인상률 설정</div>
-        -->
+        <!-- 국민연금 및 물가상승률 설정 -->
+        <div class="section-title" style="margin-top: 10px;">🏛️ 국민연금 및 물가상승률 설정 (현재나이 기준)</div>
 
         <div class="control-group">
             <div class="control-label">
-                <span>65세 기준 국민연금 월 수령액 (만 원)</span>
+                <span>65세 기준 국민연금 월 수령액 (현재가치, 만 원)</span>
             </div>
             <input type="number" id="base-pension-65" class="input-number" value="175" step="1" min="0">
         </div>
@@ -278,9 +275,8 @@
             <input type="number" id="pension-rate" class="input-number" value="2.8" step="0.1" min="0" max="10">
         </div>
 
-        <!--
-        <div class="section-title" style="margin-top: 10px;">📈 투자 및 초기 생활비 조건 설정</div>
-        -->
+        <!-- 투자 조건 슬라이더 -->
+        <div class="section-title" style="margin-top: 10px;">📈 투자 및 현재 기준 필요 생활비 설정</div>
 
         <div class="control-group">
             <div class="control-label">
@@ -292,17 +288,19 @@
 
         <div class="control-group">
             <div class="control-label">
-                <span>은퇴시 월 필요 생활비</span>
+                <span id="expense-label">현재 나이 기준 필요 월 생활비</span>
                 <span id="expense-val" style="color: var(--primary-color);">500 만 원</span>
             </div>
             <input type="range" id="input-expense" min="200" max="800" step="10" value="500">
         </div>
     </div>
 
+    <!-- 순수 캔버스 차트 영역 -->
     <div class="canvas-container">
         <canvas id="customChart"></canvas>
     </div>
 
+    <!-- 범례 표시 -->
     <div class="legend-container">
         <div class="legend-item">
             <div class="legend-color" style="background-color: #2563eb;"></div>
@@ -326,14 +324,14 @@
         </div>
     </div>
 
+    <!-- 설명 메모 -->
     <div class="legend-note">
-        <strong>💡 인출 및 인상률 적용 규칙 (은퇴나이~90세 시뮬레이션):</strong><br>
-        • <strong>국민연금 입력 기준:</strong> 사용자가 입력한 금액은 <u>65세 정상수령 기준 월 수령액</u>입니다. 수령 시작 나이에 따라 조기수령 또는 연기수령 금액이 자동 계산됩니다.<br>
-        • <strong>조기수령/연기수령 반영:</strong> 65세보다 빠르게 수령하면 연 6% 감액, 65세보다 늦게 수령하면 연 7.2% 증액 기준으로 계산합니다.<br>
-        • <strong>보라색 점선 (연간 인출 필요생활비):</strong> 물가상승률이 반영된 해당 연도 총필요생활비에서 국민연금 수령액을 차감한 <u>실제 계좌 인출 필요액</u> 추이입니다.<br>
-        • <strong>인출 순서:</strong> [생활비 - 국민연금] 차액을 <u>1순위: 미공제 연금저축</u> ➔ <u>2순위: 퇴직금 IRP</u> ➔ <u>3순위: 세액공제 연금저축</u> 순서로 차출합니다.<br>
-        • <strong>ISA 풍차돌리기:</strong> 세액공제 연금저축에서 은퇴 후 4년간 연 1,500만 원씩 인출 ➔ ISA ➔ 미공제 연금저축으로 옮겨 비과세 재원을 지속 충전합니다.<br>
-        • <strong>생활비 & 연금 복리 인상:</strong> 은퇴시 월 생활비와 국민연금 수령액은 매년 지정된 물가 상승율(%)만큼 함께 복리로 증가합니다.
+        <strong>💡 은퇴 인출 시뮬레이션 규칙:</strong><br>
+        • <strong>그래프 구간:</strong> 차트는 현재 나이부터 시작되며, 은퇴 전까지는 데이터 표시가 없고 은퇴 시점부터 인출 곡선이 표현됩니다.<br>
+        • <strong>물가상승률 적용:</strong> 입력한 생활비 및 국민연금 기본 수령액은 <u>현재 나이 기준</u>이며, 물가상승률을 적용하여 은퇴 및 수령 시점의 미래 가치로 복리 반영됩니다.<br>
+        • <strong>국민연금 감증액:</strong> 65세 정상 수령 기준 대비 1년 빠를 때마다 연 6% 감액, 늦을 때마다 연 7.2% 증액이 적용됩니다.<br>
+        • <strong>인출 순서:</strong> [생활비 - 국민연금] 차액을 <u>1순위: 미공제 연금저축</u> ➔ <u>2순위: 퇴직금 IRP</u> ➔ <u>3순위: 공제 연금저축</u> 순으로 인출합니다.<br>
+        • <strong>ISA 풍차돌리기:</strong> 은퇴 시점부터 <u>국민연금 수령 개시 전까지</u> 공제 연금저축에서 연 1,500만 원을 차출하여 미공제 연금저축으로 옮겨 비과세 재원을 세팅합니다.
     </div>
 </div>
 
@@ -367,7 +365,7 @@
         basePension65
     ) {
         const cagr = cagrPercent / 100;
-        const annualExpenseInitial = monthlyExpense * 12;
+        const annualExpenseCurrent = monthlyExpense * 12;
         const incRate = pensionIncRate / 100;
 
         let ages = [];
@@ -384,39 +382,60 @@
         const baseMonthly = getBaseMonthlyPension(startPensionAge, basePension65);
         const baseAnnualPension = baseMonthly * 12;
 
-        for (let age = retireAge; age <= 90; age++) {
+        for (let age = currentAge; age <= 90; age++) {
             ages.push(age + "세");
 
-            let currentAnnualExpense = annualExpenseInitial * Math.pow(1 + incRate, age - retireAge);
-
-            let nationalPension = 0;
-            if (age >= startPensionAge) {
-                nationalPension = baseAnnualPension * Math.pow(1 + incRate, age - startPensionAge);
+            // 은퇴 전 구간은 데이터 없음 (null 처리)
+            if (age < retireAge) {
+                totalAssets.push(null);
+                taxDeducted.push(null);
+                nonTaxDeducted.push(null);
+                irp.push(null);
+                netExpenses.push(null);
+                continue;
             }
 
+            // 은퇴 나이 이후 시뮬레이션
+            // 1. 생활비 물가상승률 반영 (현재 나이 기준)
+            let currentAnnualExpense = annualExpenseCurrent * Math.pow(1 + incRate, age - currentAge);
+
+            // 2. 국민연금 물가상승률 반영 (현재 나이 기준)
+            let nationalPension = 0;
+            if (age >= startPensionAge) {
+                nationalPension = baseAnnualPension * Math.pow(1 + incRate, age - currentAge);
+            }
+
+            // 3. 실제 계좌 필요 인출액
             let netExpense = Math.max(0, currentAnnualExpense - nationalPension);
             netExpenses.push(Math.round(netExpense));
 
-            let isaTransfer = (age <= retireAge + 3) ? 1500 : 0;
+            // ISA 풍차돌리기 적용: 은퇴 시점부터 국민연금 수령 개시 전까지
+            let isaTransfer = (age >= retireAge && age < startPensionAge) ? 1500 : 0;
 
-            curTaxDeducted = Math.max(0, curTaxDeducted - isaTransfer);
-            curNonTaxDeducted += isaTransfer;
+            // 4. ISA 이체 (공제 받은 계좌 잔액 한도 내에서 차출)
+            let actualTransfer = Math.min(curTaxDeducted, isaTransfer);
+            curTaxDeducted -= actualTransfer;
+            curNonTaxDeducted += actualTransfer;
 
-            if (curNonTaxDeducted >= netExpense) {
-                curNonTaxDeducted -= netExpense;
-            } else {
-                let shortage = netExpense - curNonTaxDeducted;
-                curNonTaxDeducted = 0;
-
-                if (curIrp >= shortage) {
-                    curIrp -= shortage;
+            // 5. 생활비 인출 순서 반영 (미공제 -> IRP -> 공제)
+            if (netExpense > 0) {
+                if (curNonTaxDeducted >= netExpense) {
+                    curNonTaxDeducted -= netExpense;
                 } else {
-                    let shortageAfterIrp = shortage - curIrp;
-                    curIrp = 0;
-                    curTaxDeducted = Math.max(0, curTaxDeducted - shortageAfterIrp);
+                    let shortage = netExpense - curNonTaxDeducted;
+                    curNonTaxDeducted = 0;
+
+                    if (curIrp >= shortage) {
+                        curIrp -= shortage;
+                    } else {
+                        let shortageAfterIrp = shortage - curIrp;
+                        curIrp = 0;
+                        curTaxDeducted = Math.max(0, curTaxDeducted - shortageAfterIrp);
+                    }
                 }
             }
 
+            // 6. 연말 투자 수익률 적용
             curTaxDeducted = curTaxDeducted * (1 + cagr);
             curNonTaxDeducted = curNonTaxDeducted * (1 + cagr);
             curIrp = curIrp * (1 + cagr);
@@ -441,9 +460,13 @@
     }
 
     function drawChart() {
-        const currentAge = parseInt(document.getElementById('current-age').value) || 55;
-        const retireAgeInput = parseInt(document.getElementById('retire-age').value) || 56;
-        const retireAge = Math.max(retireAgeInput, currentAge);
+        let currentAge = parseInt(document.getElementById('input-current-age').value) || 55;
+        let retireAge = parseInt(document.getElementById('input-retire-age').value) || 56;
+
+        if (retireAge <= currentAge) {
+            retireAge = currentAge + 1;
+            document.getElementById('input-retire-age').value = retireAge;
+        }
 
         const cagr = parseFloat(document.getElementById('input-cagr').value);
         const expense = parseInt(document.getElementById('input-expense').value);
@@ -456,7 +479,12 @@
         const pensionIncRate = parseFloat(document.getElementById('pension-rate').value) || 0;
         const basePension65 = parseFloat(document.getElementById('base-pension-65').value) || 0;
 
-        document.getElementById('current-age-label').innerText = currentAge;
+        // UI 텍스트 업데이트
+        document.getElementById('main-title').innerText = `📊 은퇴 자산 및 계좌별 잔액 시뮬레이션 (${currentAge}세~90세)`;
+        document.getElementById('card-init-title').innerText = `은퇴 시점 시작 금융자산 (${retireAge}세)`;
+        document.getElementById('account-section-title').innerText = `💳 은퇴 시점 계좌별 원금 입력 (${retireAge}세 기준)`;
+        document.getElementById('expense-label').innerText = `현재 나이 기준 필요 월 생활비 (${currentAge}세 기준)`;
+
         document.getElementById('cagr-val').innerText = cagr + ' %';
         document.getElementById('expense-val').innerText = expense + ' 만 원';
 
@@ -477,9 +505,15 @@
         );
 
         const finalTotal = (data.totalAssets[data.totalAssets.length - 1] / 10000).toFixed(2);
-
+        
         document.getElementById('card-total-asset').innerText = finalTotal + ' 억 원';
-        document.getElementById('card-pension').innerText = data.baseMonthly.toLocaleString() + ' 만 원';
+        
+        // 국민연금 수령 개시 시점의 물가상승 적용 월 수령액 계산
+        const pensionAgeDiff = Math.max(0, startPensionAge - currentAge);
+        const pensionFutureRate = Math.pow(1 + (pensionIncRate / 100), pensionAgeDiff);
+        const futurePensionMonthly = Math.round(data.baseMonthly * pensionFutureRate);
+        
+        document.getElementById('card-pension').innerText = futurePensionMonthly.toLocaleString() + ' 만 원';
 
         const canvas = document.getElementById('customChart');
         const ctx = canvas.getContext('2d');
@@ -502,15 +536,17 @@
         const chartWidth = width - paddingLeft - paddingRight;
         const chartHeight = height - paddingTop - paddingBottom;
 
-        let maxVal = Math.max(
-            ...data.totalAssets,
-            ...data.irp,
-            ...data.nonTaxDeducted,
-            ...data.taxDeducted,
-            ...data.netExpenses
-        ) * 1.05;
+        // Valid한 데이터 숫자 모음
+        const validValues = [
+            ...data.totalAssets.filter(v => v !== null),
+            ...data.irp.filter(v => v !== null),
+            ...data.nonTaxDeducted.filter(v => v !== null),
+            ...data.taxDeducted.filter(v => v !== null),
+            ...data.netExpenses.filter(v => v !== null)
+        ];
 
-        if (maxVal <= 0 || !isFinite(maxVal)) {
+        let maxVal = Math.max(...validValues, 0) * 1.05;
+        if (maxVal <= 0) {
             maxVal = 1000;
         }
 
@@ -536,14 +572,16 @@
         }
 
         const numPoints = data.ages.length;
-        const xStep = chartWidth / Math.max(1, numPoints - 1);
+        const xStep = chartWidth / (numPoints - 1);
         ctx.textAlign = 'center';
+
+        const stepInterval = numPoints > 30 ? 5 : (numPoints > 15 ? 2 : 1);
 
         for (let i = 0; i < numPoints; i++) {
             let xPos = paddingLeft + i * xStep;
             let yPos = height - paddingBottom + 20;
 
-            if (i % 2 === 0 || i === numPoints - 1) {
+            if (i % stepInterval === 0 || i === numPoints - 1) {
                 ctx.fillText(data.ages[i], xPos, yPos);
             }
         }
@@ -559,12 +597,17 @@
                 ctx.setLineDash([]);
             }
 
+            let isStarted = false;
+
             for (let i = 0; i < numPoints; i++) {
+                if (seriesData[i] === null) continue;
+
                 let x = paddingLeft + i * xStep;
                 let y = height - paddingBottom - (seriesData[i] / maxVal) * chartHeight;
 
-                if (i === 0) {
+                if (!isStarted) {
                     ctx.moveTo(x, y);
+                    isStarted = true;
                 } else {
                     ctx.lineTo(x, y);
                 }
@@ -576,6 +619,8 @@
             ctx.setLineDash([]);
 
             for (let i = 0; i < numPoints; i++) {
+                if (seriesData[i] === null) continue;
+
                 let x = paddingLeft + i * xStep;
                 let y = height - paddingBottom - (seriesData[i] / maxVal) * chartHeight;
 
@@ -585,15 +630,21 @@
             }
         }
 
+        // 보라색 점선: 연간 인출 필요생활비
         plotSeries(data.netExpenses, '#9333ea', 2, true);
+
+        // 계좌별 자산
         plotSeries(data.taxDeducted, '#dc2626', 2);
         plotSeries(data.nonTaxDeducted, '#d97706', 2);
         plotSeries(data.irp, '#059669', 2, true);
+
+        // 전체 자산 합계
         plotSeries(data.totalAssets, '#2563eb', 3.5);
     }
 
-    document.getElementById('current-age').addEventListener('input', drawChart);
-    document.getElementById('retire-age').addEventListener('input', drawChart);
+    // 이벤트 리스너 등록
+    document.getElementById('input-current-age').addEventListener('input', drawChart);
+    document.getElementById('input-retire-age').addEventListener('input', drawChart);
     document.getElementById('input-cagr').addEventListener('input', drawChart);
     document.getElementById('input-expense').addEventListener('input', drawChart);
     document.getElementById('init-tax-deducted').addEventListener('input', drawChart);
@@ -602,7 +653,7 @@
     document.getElementById('base-pension-65').addEventListener('input', drawChart);
     document.getElementById('pension-age').addEventListener('change', drawChart);
     document.getElementById('pension-rate').addEventListener('input', drawChart);
-
+    
     window.addEventListener('resize', drawChart);
     window.onload = drawChart;
 </script>
