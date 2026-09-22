@@ -292,10 +292,11 @@ function simulate() {
 
     // living need
     const priceIdx = Math.pow(1 + infl, age - startAge);
-    const L = livingMonthly * 12 * priceIdx;
+    const L = livingMonthly * priceIdx; // 월간 필요생활비 (현재가치 -> 물가반영)
     seriesLiving.push(L);
+    const annualNeed = L * 12;
     const P = age >= npsAge ? npsMonthly * 12 * Math.pow(1 + infl, age - npsAge) : 0;
-    let need = Math.max(L - P, 0);
+    let need = Math.max(annualNeed - P, 0);
 
     const wA = Math.min(need, A); A -= wA; need -= wA;
     const wC = Math.min(need, C); C -= wC; need -= wC;
@@ -330,7 +331,7 @@ function renderChart(result) {
     { label: 'IRP', data: toEok(seriesC), borderColor: '#1baf7a', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
     { label: '신규 개인연금', data: toEok(seriesD), borderColor: '#6250d6', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
     { label: '총자산', data: toEok(seriesTotal), borderColor: '#a3271f', borderWidth: 2, borderDash: [5,3], pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
-    { label: '필요생활비(연)', data: seriesLiving, borderColor: '#8a5a3b', borderWidth: 2, borderDash: [2,2], pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y1' }
+    { label: '필요생활비(월)', data: seriesLiving, borderColor: '#8a5a3b', borderWidth: 2, borderDash: [2,2], pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y1' }
   ];
 
   if (chart) {
@@ -364,7 +365,7 @@ function renderChart(result) {
       },
       scales: {
         y: { position: 'left', grid: { color: 'rgba(150,140,120,0.2)' }, ticks: { callback: v => v + '억' }, title: { display: true, text: '계좌 잔액 (억원)' } },
-        y1: { position: 'right', grid: { display: false }, ticks: { callback: v => v.toLocaleString('ko-KR') }, title: { display: true, text: '연간 필요생활비 (만원)' } },
+        y1: { position: 'right', grid: { display: false }, ticks: { callback: v => v.toLocaleString('ko-KR') }, title: { display: true, text: '월간 필요생활비 (만원)' } },
         x: { grid: { display: false }, title: { display: true, text: '나이' }, ticks: { autoSkip: true, maxTicksLimit: 14 } }
       }
     }
