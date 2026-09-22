@@ -311,7 +311,7 @@
     </div>
 
 <script>
-    // 탭 목록: label(버튼 문구), icon, url(내용), type(dashboard: 안내문 표시 / link: iframe 표시), badge(선택)
+    // 탭 목록: label(버튼 문구), icon, url(내용), type(dashboard: 안내문 표시 / link: iframe 표시 / newtab: 새 탭에서 열기), badge(선택)
     const TABS = [
         { label: "Home", icon: "", type: "dashboard"},
         { label: "대쉬보드", icon: "🏠", type: "link", url: "https://script.google.com/macros/s/AKfycbzLCU_3cSTeJ9VBh-rq1g8YSoY_gvT7yVEXNZuCPV1Sfbfq67iQ5wTEGtlQFhs5Msh1/exec" },
@@ -321,7 +321,7 @@
         { label: "연도별 백테스트", icon: "📈", type: "link", url: "ccc.html" },
         { label: "적립 시뮬레이터", icon: "🧮", type: "link", url: "ddd.html" },
         { label: "운용 시뮬레이션", icon: "🎯", type: "link", url: "eee.html" },
-        { label: "Gemini", icon: "✨", type: "link", url: "https://script.google.com/macros/s/AKfycbx7sH9o3tqaPIgvkA6kqWZhvVGkcTgn_uSTI2l7aCh80J_-iCroVVKSvN3w8ZwcKqFP/exec" }
+        { label: "Gemini", icon: "✨", type: "newtab", url: "https://script.google.com/macros/s/AKfycbx7sH9o3tqaPIgvkA6kqWZhvVGkcTgn_uSTI2l7aCh80J_-iCroVVKSvN3w8ZwcKqFP/exec" }
     ];
 
     const tabRow = document.getElementById("tab-row");
@@ -342,6 +342,14 @@
             panel.classList.remove("has-frame");
             placeholder.style.display = "block";
             placeholder.textContent = "내용 표기";
+        } else if (tab.type === "newtab") {
+            // X-Frame-Options 등으로 iframe에 표시할 수 없는 페이지는 새 탭으로 오픈
+            window.open(tab.url, "_blank");
+            frame.style.display = "none";
+            frame.src = "";
+            panel.classList.remove("has-frame");
+            placeholder.style.display = "block";
+            placeholder.textContent = "새 탭에서 Gemini가 열렸습니다.";
         } else {
             placeholder.style.display = "none";
             panel.classList.add("has-frame");
