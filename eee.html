@@ -186,7 +186,7 @@
       <div class="field2">
         <div><label for="rate">연 수익률 (%)</label><input type="number" id="rate" value="8" step="0.5"></div>
         <div><label for="infl">물가상승률 (%)</label><input type="number" id="infl" value="2.8" step="0.1"></div>
-        <div><label for="cap">저율과세 한도</label><input type="number" id="cap" value="1500" step="100"></div>
+        <div><label for="cap">저율과세 한도(연, 만원)</label><input type="number" id="cap" value="1500" step="100"></div>
       </div>
     </div>
 
@@ -322,12 +322,12 @@ function renderChart(result) {
   const { ages, seriesA, seriesB, seriesC, seriesD, seriesTotal, seriesLiving } = result;
   const toEok = (arr) => arr.map(v => v / 10000);
   const datasets = [
-    { label: '개인연금(공제x)', data: toEok(seriesA), borderColor: '#2a78d6', borderWidth: 2, pointRadius: 0, tension: 0.15, yAxisID: 'y' },
-    { label: '개인연금(공제o)', data: toEok(seriesB), borderColor: '#eb6834', borderWidth: 2, pointRadius: 0, tension: 0.15, yAxisID: 'y' },
-    { label: 'IRP', data: toEok(seriesC), borderColor: '#1baf7a', borderWidth: 2, pointRadius: 0, tension: 0.15, yAxisID: 'y' },
-    { label: '신규 개인연금', data: toEok(seriesD), borderColor: '#6250d6', borderWidth: 2, pointRadius: 0, tension: 0.15, yAxisID: 'y' },
-    { label: '총자산', data: toEok(seriesTotal), borderColor: '#a3271f', borderWidth: 2, borderDash: [5,3], pointRadius: 0, tension: 0.15, yAxisID: 'y' },
-    { label: '필요생활비(연)', data: seriesLiving, borderColor: '#8a5a3b', borderWidth: 2, borderDash: [2,2], pointRadius: 0, tension: 0.15, yAxisID: 'y1' }
+    { label: '개인연금(공제x)', data: toEok(seriesA), borderColor: '#2a78d6', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
+    { label: '개인연금(공제o)', data: toEok(seriesB), borderColor: '#eb6834', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
+    { label: 'IRP', data: toEok(seriesC), borderColor: '#1baf7a', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
+    { label: '신규 개인연금', data: toEok(seriesD), borderColor: '#6250d6', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
+    { label: '총자산', data: toEok(seriesTotal), borderColor: '#a3271f', borderWidth: 2, borderDash: [5,3], pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y' },
+    { label: '필요생활비(연)', data: seriesLiving, borderColor: '#8a5a3b', borderWidth: 2, borderDash: [2,2], pointRadius: 0, pointHoverRadius: 5, pointHitRadius: 10, tension: 0.15, yAxisID: 'y1' }
   ];
 
   if (chart) {
@@ -344,7 +344,21 @@ function renderChart(result) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => `${items[0].label}세`,
+            label: (item) => {
+              if (item.dataset.yAxisID === 'y1') {
+                return `${item.dataset.label}: ${Math.round(item.parsed.y).toLocaleString('ko-KR')}만원`;
+              }
+              return `${item.dataset.label}: ${item.parsed.y.toFixed(2)}억원`;
+            }
+          }
+        }
+      },
       scales: {
         y: { position: 'left', grid: { color: 'rgba(150,140,120,0.2)' }, ticks: { callback: v => v + '억' }, title: { display: true, text: '계좌 잔액 (억원)' } },
         y1: { position: 'right', grid: { display: false }, ticks: { callback: v => v.toLocaleString('ko-KR') }, title: { display: true, text: '연간 필요생활비 (만원)' } },
