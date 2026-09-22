@@ -167,8 +167,8 @@
 <body>
 <div class="wrap">
   <h1>은퇴 인출 시뮬레이터</h1>
-  <p class="sub">계좌 초기값과 수익률, 인출 조건을 입력하면 은퇴 후 각 계좌 잔액이 나이별로 어떻게 변하는지 계산합니다.<br>
-  인출 순서: 매년 개인연금(공제o)에서 한도만큼 신규 개인연금으로 이동 → 생활비는 개인연금(공제x) → IRP → 신규 개인연금 순으로 충당.</p>
+  // <p class="sub">계좌 초기값과 수익률, 인출 조건을 입력하면 은퇴 후 각 계좌 잔액이 나이별로 어떻게 변하는지 계산합니다.<br>
+  // 인출 순서: 매년 개인연금(공제o)에서 한도만큼 신규 개인연금으로 이동 → 생활비는 개인연금(공제x) → IRP → 신규 개인연금 순으로 충당.</p>
 
   <div class="grid" style="margin-bottom: 6px;">
     <div class="card">
@@ -195,7 +195,7 @@
       <div class="field2">
         <div><label for="living">월 생활비</label><input type="number" id="living" value="600" step="10"></div>
         <div><label for="npsNormal">국민연금 정상수령액</label><input type="number" id="npsNormal" value="170" step="5"></div>
-        <div><label for="npsAge">수령 나이</label><input type="number" id="npsAge" value="65" step="1" min="60" max="70"></div>
+        <div><label for="npsAge">수령 나이</label><input type="number" id="npsAge" value="60" step="1" min="60" max="70"></div>
       </div>
       <div class="unit" id="npsAdjusted" style="margin-top:8px;"></div>
     </div>
