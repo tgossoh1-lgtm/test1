@@ -166,6 +166,13 @@
     }
     .header-btn:hover { border-color: var(--text-dim); }
 
+    /* 잠금 해제 완료 후 "용어 사전" 버튼 표시 */
+    .header-btn.unlocked {
+        background: #1c3a2a;
+        border-color: #35d17a;
+        color: #9be8b8;
+    }
+
     /* ---------- 탭 네비게이션 ---------- */
     .tab-nav {
         background: #0c1420;
@@ -206,6 +213,17 @@
         background: var(--tab-active-bg);
         border-bottom-color: var(--accent-red);
     }
+
+    /* 잠긴 탭 표시 (용어 사전 클릭 전) */
+    .tab-btn.locked {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+    .tab-btn.locked:hover {
+        color: var(--text-dim);
+        background: transparent;
+    }
+    .lock-icon { font-size: 11px; margin-left: 2px; }
 
     .tab-badge {
         background: var(--accent-red-soft);
@@ -293,7 +311,7 @@
                     <button class="active" type="button">KO</button>
                     <button type="button">EN</button>
                 </div>
-                <button class="header-btn" type="button">용어 사전</button>
+                <button class="header-btn" type="button" id="glossary-btn">용어 사전</button>
                 <button class="header-btn primary" type="button">데이터 업데이트</button>
             </div>
         </div>
@@ -312,11 +330,12 @@
 
 <script>
     // 탭 목록: label(버튼 문구), icon, url(내용), type(dashboard: 안내문 표시 / link: iframe 표시 / newtab: 새 탭에서 열기), badge(선택)
+    // locked: true 인 탭은 "용어 사전"을 한 번 클릭하기 전까지 선택할 수 없습니다.
     const TABS = [
-        { label: "Home", icon: "", type: "dashboard"},
-        { label: "캘린", icon: "🏠", type: "link", url: "https://script.google.com/macros/s/AKfycbwsu5aPM7l1m8zpicpXuoWm-M5fTl6qLKXqe-KjVusjLOBvI6OILOjJ1cHNbxRf5S51/exec" },
-        { label: "대쉬보드", icon: "🏠", type: "link", url: "https://script.google.com/macros/s/AKfycbxHILlWPSBkMSntx4ArUQ06ZvAtIOKvXUkgcjy2FOUwFEEc3ihuo9YfrpC7h4bOc8RO/exec" },
-        { label: "Today", icon: "⚡", type: "link", url: "https://script.google.com/macros/s/AKfycbyAYZedvxzICF7HxMud5tCLk9ccRXQMahJX__xQUoNzJdnEaiPG7GLJGNo1fCKlQRqZ_Q/exec", badge: "오늘" },
+        { label: "Home", icon: "", type: "dashboard" },
+        { label: "캘린더", icon: "", type: "link", url: "https://script.google.com/macros/s/AKfycbwsu5aPM7l1m8zpicpXuoWm-M5fTl6qLKXqe-KjVusjLOBvI6OILOjJ1cHNbxRf5S51/exec" },
+        { label: "대쉬보드", icon: "🏠", type: "link", url: "https://script.google.com/macros/s/AKfycbxHILlWPSBkMSntx4ArUQ06ZvAtIOKvXUkgcjy2FOUwFEEc3ihuo9YfrpC7h4bOc8RO/exec", locked: true },
+        { label: "Today", icon: "⚡", type: "link", url: "https://script.google.com/macros/s/AKfycbyAYZedvxzICF7HxMud5tCLk9ccRXQMahJX__xQUoNzJdnEaiPG7GLJGNo1fCKlQRqZ_Q/exec", badge: "오늘", locked: true },
         { label: "자산배분 전략", icon: "📊", type: "link", url: "aaa.html" },
         { label: "각 계좌별 운용", icon: "💼", type: "link", url: "bbb.html" },
         { label: "연도별 백테스트", icon: "📈", type: "link", url: "ccc.html" },
@@ -325,17 +344,27 @@
         { label: "Gemini", icon: "✨", type: "newtab", url: "https://script.google.com/macros/s/AKfycbx7sH9o3tqaPIgvkA6kqWZhvVGkcTgn_uSTI2l7aCh80J_-iCroVVKSvN3w8ZwcKqFP/exec" }
     ];
 
+    // "용어 사전"을 한 번이라도 클릭했는지 여부 (세션 동안 유지)
+    let glossaryUnlocked = false;
+
     const tabRow = document.getElementById("tab-row");
     const panel = document.getElementById("content-panel");
     const placeholder = document.getElementById("placeholder-text");
     const frame = document.getElementById("content-frame");
+    const glossaryBtn = document.getElementById("glossary-btn");
 
     function selectTab(index) {
+        const tab = TABS[index];
+
+        // 잠긴 탭인데 아직 용어 사전을 클릭하지 않았다면 동작 막기
+        if (tab.locked && !glossaryUnlocked) {
+            alert('"용어 사전"을 먼저 한 번 클릭해야 "' + tab.label + '" 탭을 열 수 있습니다.');
+            return; // 활성 탭 표시나 내용 로딩을 진행하지 않음
+        }
+
         document.querySelectorAll(".tab-btn").forEach((btn, i) => {
             btn.classList.toggle("active", i === index);
         });
-
-        const tab = TABS[index];
 
         if (tab.type === "dashboard") {
             frame.style.display = "none";
@@ -362,12 +391,26 @@
     // 탭 버튼 생성
     TABS.forEach((tab, i) => {
         const btn = document.createElement("button");
-        btn.className = "tab-btn";
+        btn.className = "tab-btn" + (tab.locked ? " locked" : "");
         btn.innerHTML =
             '<span class="tab-icon">' + tab.icon + '</span><span>' + tab.label + '</span>' +
-            (tab.badge ? '<span class="tab-badge">' + tab.badge + '</span>' : '');
+            (tab.badge ? '<span class="tab-badge">' + tab.badge + '</span>' : '') +
+            (tab.locked ? '<span class="lock-icon">🔒</span>' : '');
         btn.addEventListener("click", () => selectTab(i));
         tabRow.appendChild(btn);
+    });
+
+    // "용어 사전" 클릭 시 잠금 해제
+    glossaryBtn.addEventListener("click", () => {
+        if (!glossaryUnlocked) {
+            glossaryUnlocked = true;
+            glossaryBtn.classList.add("unlocked");
+            document.querySelectorAll(".tab-btn.locked").forEach((btn) => {
+                btn.classList.remove("locked");
+                const lockIcon = btn.querySelector(".lock-icon");
+                if (lockIcon) lockIcon.remove();
+            });
+        }
     });
 
     // 갱신 시각 표시 (오늘 날짜 기준)
@@ -387,7 +430,7 @@
         if (passwordInput === MY_PASSWORD) {
             document.getElementById("auth-loading").style.display = "none";
             document.getElementById("protected-menu").style.display = "block";
-            selectTab(0); // 기본으로 대쉬보드 탭 표시
+            selectTab(0); // 기본으로 Home 탭 표시
         } else {
             alert("비밀번호가 올바르지 않습니다.");
             window.location.reload();
