@@ -333,7 +333,7 @@
     // locked: true 인 탭은 "용어 사전"을 한 번 클릭하기 전까지 선택할 수 없습니다.
     const TABS = [
         { label: "Home", icon: "", type: "dashboard" },
-        { label: "캘린더", icon: "", type: "link", url: "https://script.google.com/macros/s/AKfycbwsu5aPM7l1m8zpicpXuoWm-M5fTl6qLKXqe-KjVusjLOBvI6OILOjJ1cHNbxRf5S51/exec" },
+        { label: "캘린더", icon: "", type: "link", url: "https://script.google.com/macros/s/AKfycbwJgAt5S-LwXhmaKvzcsr-O2Rkez1MG4ugvihS17991hV_hePoryGAGCSB42GFLu7Gb/exec" },
         { label: "대쉬보드", icon: "🏠", type: "link", url: "https://script.google.com/macros/s/AKfycbxHILlWPSBkMSntx4ArUQ06ZvAtIOKvXUkgcjy2FOUwFEEc3ihuo9YfrpC7h4bOc8RO/exec", locked: true },
         { label: "Today", icon: "⚡", type: "link", url: "https://script.google.com/macros/s/AKfycbyAYZedvxzICF7HxMud5tCLk9ccRXQMahJX__xQUoNzJdnEaiPG7GLJGNo1fCKlQRqZ_Q/exec", badge: "오늘", locked: true },
         { label: "자산배분 전략", icon: "📊", type: "link", url: "aaa.html" },
@@ -358,7 +358,7 @@
 
         // 잠긴 탭인데 아직 용어 사전을 클릭하지 않았다면 동작 막기
         if (tab.locked && !glossaryUnlocked) {
-            alert('"용어 사전"을 먼저 한 번 클릭해야 "' + tab.label + '" 탭을 열 수 있습니다.');
+        //    alert('"용어 사전"을 먼저 한 번 클릭해야 "' + tab.label + '" 탭을 열 수 있습니다.');
             return; // 활성 탭 표시나 내용 로딩을 진행하지 않음
         }
 
@@ -400,16 +400,37 @@
         tabRow.appendChild(btn);
     });
 
-    // "용어 사전" 클릭 시 잠금 해제
+    // "용어 사전" 클릭 시 잠금 ↔ 해제 토글
     glossaryBtn.addEventListener("click", () => {
+        glossaryUnlocked = !glossaryUnlocked;
+        glossaryBtn.classList.toggle("unlocked", glossaryUnlocked);
+
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        tabButtons.forEach((btn, i) => {
+            if (!TABS[i].locked) return; // 원래 잠금 대상이 아닌 탭은 건너뜀
+
+            btn.classList.toggle("locked", !glossaryUnlocked);
+
+            let lockIcon = btn.querySelector(".lock-icon");
+            if (!glossaryUnlocked) {
+                // 다시 잠글 때: 아이콘이 없으면 추가
+                if (!lockIcon) {
+                    lockIcon = document.createElement("span");
+                    lockIcon.className = "lock-icon";
+                    lockIcon.textContent = "🔒";
+                    btn.appendChild(lockIcon);
+                }
+            } else if (lockIcon) {
+                lockIcon.remove();
+            }
+        });
+
+        // 잠금을 다시 걸었는데 현재 보고 있는 탭이 잠긴 탭이라면 Home으로 이동
         if (!glossaryUnlocked) {
-            glossaryUnlocked = true;
-            glossaryBtn.classList.add("unlocked");
-            document.querySelectorAll(".tab-btn.locked").forEach((btn) => {
-                btn.classList.remove("locked");
-                const lockIcon = btn.querySelector(".lock-icon");
-                if (lockIcon) lockIcon.remove();
-            });
+            const activeIndex = Array.from(tabButtons).findIndex((btn) => btn.classList.contains("active"));
+            if (activeIndex !== -1 && TABS[activeIndex].locked) {
+                selectTab(0);
+            }
         }
     });
 
